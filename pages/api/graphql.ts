@@ -1,5 +1,6 @@
 import { ApolloServer, gql } from "apollo-server-micro";
-
+import fs from "fs";
+import path from "path";
 const typeDefs = gql`
   type Query {
     tutorial(id: String!, currentPageNum: String): Tutorial
@@ -118,9 +119,30 @@ const resolvers = {
   },
 };
 
-const apolloServer = new ApolloServer({ typeDefs, resolvers, mocks: true });
+const apolloServer = new ApolloServer({
+  typeDefs,
+  resolvers,
+  mocks: true,
+  context: async ({ req }: any) => {
+    try {
+      const pkg = await readJson("sample-1", "page1.json");
+      console.log(pkg);
+      return {};
+    } catch (err) {
+      console.log("***ERROR OCURRED***");
+      console.log(err);
+    }
+  },
+});
 
 const startServer = apolloServer.start();
+
+const readJson = async (dirname: string, filename: string): Promise<any> => {
+  const filepath = path.resolve("./public", "dir", dirname, filename);
+  const fileContent = await fs.promises.readFile(filepath, "utf8");
+  const jsonData = JSON.parse(fileContent);
+  return jsonData;
+};
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Credentials", "true");
