@@ -112,13 +112,13 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    users(parent, args, context) {
-      return [{ name: "Nextjs" }];
-    },
+    // users(parent, args, context) {
+    //   return [{ name: "Nextjs" }];
+    // },
   },
 };
 
-const apolloServer = new ApolloServer({ typeDefs, resolvers });
+const apolloServer = new ApolloServer({ typeDefs, resolvers, mocks: true });
 
 const startServer = apolloServer.start();
 
