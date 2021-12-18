@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { AppProps } from "next/app";
 import "../styles/global.css";
 
@@ -7,6 +7,10 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
-}
+const App = ({ Component, pageProps }: AppProps) => (
+  <ApolloProvider client={client}>
+    <Component {...pageProps} />
+  </ApolloProvider>
+);
+
+export default App;
