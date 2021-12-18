@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import * as Apollo from "@apollo/client";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -10,7 +11,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]: Maybe<T[SubKey]>;
 };
-
+const defaultOptions = {};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -148,3 +149,66 @@ export enum VideoPlatform {
   Vimeo = "VIMEO",
   Youtube = "YOUTUBE",
 }
+
+export type GetTutorialQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetTutorialQuery = {
+  __typename?: "Query";
+  tutorial: { __typename: "Tutorial" } | null | undefined;
+};
+
+export const GetTutorialDocument = gql`
+  query GetTutorial {
+    tutorial(id: "wsl") {
+      __typename
+    }
+  }
+`;
+
+/**
+ * __useGetTutorialQuery__
+ *
+ * To run a query within a React component, call `useGetTutorialQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTutorialQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTutorialQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTutorialQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetTutorialQuery,
+    GetTutorialQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetTutorialQuery, GetTutorialQueryVariables>(
+    GetTutorialDocument,
+    options
+  );
+}
+export function useGetTutorialLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetTutorialQuery,
+    GetTutorialQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetTutorialQuery, GetTutorialQueryVariables>(
+    GetTutorialDocument,
+    options
+  );
+}
+export type GetTutorialQueryHookResult = ReturnType<typeof useGetTutorialQuery>;
+export type GetTutorialLazyQueryHookResult = ReturnType<
+  typeof useGetTutorialLazyQuery
+>;
+export type GetTutorialQueryResult = Apollo.QueryResult<
+  GetTutorialQuery,
+  GetTutorialQueryVariables
+>;
