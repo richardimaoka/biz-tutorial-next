@@ -1,14 +1,31 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import path from "path";
 import fs from "fs";
+import { ParsedUrlQuery } from "querystring";
 
-export const getStaticProps: GetStaticProps = async () => {
-  console.log("getStaticProps called");
+interface StaticPathProps extends ParsedUrlQuery {
+  user: string;
+  tutorial: string;
+}
+
+interface StaticPathParams {
+  params: StaticPathProps;
+}
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  console.log("params");
+  console.log(params);
   return { props: {} };
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  let pathParams = [];
+export const getStaticPaths: GetStaticPaths<StaticPathProps> = async () => {
+  let pathParams: StaticPathParams[] = [];
+  // `pathParams` will be = [
+  //    { params: { user: userDirName, tutorial: fileName } },
+  //    { params: { user: userDirName, tutorial: fileName } },
+  //    { params: { user: userDirName, tutorial: fileName } }
+  // ]
+
   const userDirs = fs.readdirSync(path.resolve("public", "tutorial-data"));
   for (const userDirName of userDirs) {
     const fileNames = fs.readdirSync(
@@ -28,6 +45,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: true,
   };
 };
+
+//This is read by GraphQL codegen to generate types
+// gql`
+//   query GetTutorial {
+//     tutorial (id: "wsl"){
+//       ...HeaderContainer
+//     }
+//     ${HeaderContainer.fragments}
+//   }
+// `;
 
 const Id = (): JSX.Element => {
   return <div>Id</div>;
