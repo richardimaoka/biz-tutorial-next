@@ -1,9 +1,11 @@
 import { ApolloServer, gql } from "apollo-server-micro";
 import fs from "fs";
 import path from "path";
+import { Resolvers } from "./../../lib/generated/graphql-resolver";
+
 const typeDefs = gql`
   type Query {
-    tutorial(id: String!, currentPageNum: String): Tutorial
+    tutorial(id: String!): Tutorial
   }
 
   type Tutorial {
@@ -134,8 +136,13 @@ const typeDefs = gql`
   }
 `;
 
-const resolvers = {
+const resolvers: Resolvers = {
   Query: {
+    tutorial: (parent, args, context) => {
+      const tutorialId = args.id;
+
+      return {};
+    },
     // users(parent, args, context) {
     //   return [{ name: "Nextjs" }];
     // },

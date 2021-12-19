@@ -4,7 +4,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "generate": "graphql-codegen --config codegen.yml --watch components/**/*.tsx"
+    "generate": "graphql-codegen --config codegen.yml --watch components/**/*.tsx --watch pages/api/graphql.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.5.6",

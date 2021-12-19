@@ -123,7 +123,6 @@ export type Query = {
 };
 
 export type QueryTutorialArgs = {
-  currentPageNum?: InputMaybe<Scalars["String"]>;
   id: Scalars["String"];
 };
 
@@ -181,6 +180,9 @@ export enum VideoPlatform {
   Vimeo = "VIMEO",
   Youtube = "YOUTUBE",
 }
+
+export type WithIndex<TObject> = TObject & Record<string, any>;
+export type ResolversObject<TObject> = WithIndex<TObject>;
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
@@ -288,7 +290,7 @@ export type DirectiveResolverFn<
 ) => TResult | Promise<TResult>;
 
 /** Mapping between all available schema types and the resolvers types */
-export type ResolversTypes = {
+export type ResolversTypes = ResolversObject<{
   Action: ResolverTypeWrapper<Action>;
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
   Command: ResolverTypeWrapper<Command>;
@@ -346,10 +348,10 @@ export type ResolversTypes = {
   Tutorial: ResolverTypeWrapper<Tutorial>;
   Video: ResolverTypeWrapper<Video>;
   VideoPlatform: VideoPlatform;
-};
+}>;
 
 /** Mapping between all available schema types and the resolvers parents */
-export type ResolversParentTypes = {
+export type ResolversParentTypes = ResolversObject<{
   Action: Action;
   Boolean: Scalars["Boolean"];
   Command: Command;
@@ -400,65 +402,65 @@ export type ResolversParentTypes = {
   };
   Tutorial: Tutorial;
   Video: Video;
-};
+}>;
 
 export type ActionResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Action"] = ResolversParentTypes["Action"]
-> = {
+> = ResolversObject<{
   paragraph?: Resolver<
     Maybe<ResolversTypes["Paragraph"]>,
     ParentType,
     ContextType
   >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
 export type CommandResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Command"] = ResolversParentTypes["Command"]
-> = {
+> = ResolversObject<{
   command?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
 export type CommandAndOutputResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["CommandAndOutput"] = ResolversParentTypes["CommandAndOutput"]
-> = {
+> = ResolversObject<{
   command?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   output?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
 export type DecorateTextChunksInputResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["DecorateTextChunksInput"] = ResolversParentTypes["DecorateTextChunksInput"]
-> = {
+> = ResolversObject<{
   chunks?: Resolver<
     Array<Maybe<ResolversTypes["TextChunkWithOperation"]>>,
     ParentType,
     ContextType
   >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
 export type DirectoryStructureResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["DirectoryStructure"] = ResolversParentTypes["DirectoryStructure"]
-> = {
+> = ResolversObject<{
   contents?: Resolver<
     Maybe<Array<Maybe<ResolversTypes["String"]>>>,
     ParentType,
     ContextType
   >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
 export type FoldableResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Foldable"] = ResolversParentTypes["Foldable"]
-> = {
+> = ResolversObject<{
   elements?: Resolver<
     Maybe<Array<Maybe<ResolversTypes["PlainElement"]>>>,
     ParentType,
@@ -470,49 +472,49 @@ export type FoldableResolvers<
     ContextType
   >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
 export type ImageResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Image"] = ResolversParentTypes["Image"]
-> = {
+> = ResolversObject<{
   caption?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   url?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
 export type ImageGroupResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["ImageGroup"] = ResolversParentTypes["ImageGroup"]
-> = {
+> = ResolversObject<{
   images?: Resolver<
     Maybe<Array<Maybe<ResolversTypes["Image"]>>>,
     ParentType,
     ContextType
   >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
 export type NoteResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Note"] = ResolversParentTypes["Note"]
-> = {
+> = ResolversObject<{
   body?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
 export type OutputResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Output"] = ResolversParentTypes["Output"]
-> = {
+> = ResolversObject<{
   body?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
 export type PageResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Page"] = ResolversParentTypes["Page"]
-> = {
+> = ResolversObject<{
   id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
   nextPageNum?: Resolver<
     Maybe<ResolversTypes["String"]>,
@@ -537,12 +539,12 @@ export type PageResolvers<
   >;
   title?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
 export type PageElementResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["PageElement"] = ResolversParentTypes["PageElement"]
-> = {
+> = ResolversObject<{
   __resolveType: TypeResolveFn<
     | "Action"
     | "Command"
@@ -555,24 +557,24 @@ export type PageElementResolvers<
     ParentType,
     ContextType
   >;
-};
+}>;
 
 export type ParagraphResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Paragraph"] = ResolversParentTypes["Paragraph"]
-> = {
+> = ResolversObject<{
   chunks?: Resolver<
     Maybe<Array<Maybe<ResolversTypes["TextChunk"]>>>,
     ParentType,
     ContextType
   >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
 export type PlainElementResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["PlainElement"] = ResolversParentTypes["PlainElement"]
-> = {
+> = ResolversObject<{
   __resolveType: TypeResolveFn<
     | "Action"
     | "Command"
@@ -584,12 +586,12 @@ export type PlainElementResolvers<
     ParentType,
     ContextType
   >;
-};
+}>;
 
 export type ProgressResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Progress"] = ResolversParentTypes["Progress"]
-> = {
+> = ResolversObject<{
   currentPageNum?: Resolver<
     Maybe<ResolversTypes["Int"]>,
     ParentType,
@@ -597,24 +599,24 @@ export type ProgressResolvers<
   >;
   numPages?: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
 export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Query"] = ResolversParentTypes["Query"]
-> = {
+> = ResolversObject<{
   tutorial?: Resolver<
     Maybe<ResolversTypes["Tutorial"]>,
     ParentType,
     ContextType,
     RequireFields<QueryTutorialArgs, "id">
   >;
-};
+}>;
 
 export type TextChunkResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["TextChunk"] = ResolversParentTypes["TextChunk"]
-> = {
+> = ResolversObject<{
   bold?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
   highlight?: Resolver<
     Maybe<ResolversTypes["Boolean"]>,
@@ -638,12 +640,12 @@ export type TextChunkResolvers<
   >;
   text?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
 export type TextChunkModifyOperationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["TextChunkModifyOperation"] = ResolversParentTypes["TextChunkModifyOperation"]
-> = {
+> = ResolversObject<{
   bold?: Resolver<Maybe<ResolversTypes["Boolean"]>, ParentType, ContextType>;
   highlight?: Resolver<
     Maybe<ResolversTypes["Boolean"]>,
@@ -662,23 +664,23 @@ export type TextChunkModifyOperationResolvers<
   >;
   text?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
 export type TextChunkOperationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["TextChunkOperation"] = ResolversParentTypes["TextChunkOperation"]
-> = {
+> = ResolversObject<{
   __resolveType: TypeResolveFn<
     "TextChunkModifyOperation" | "TextChunkSplitOperation",
     ParentType,
     ContextType
   >;
-};
+}>;
 
 export type TextChunkSplitOperationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["TextChunkSplitOperation"] = ResolversParentTypes["TextChunkSplitOperation"]
-> = {
+> = ResolversObject<{
   splitAt?: Resolver<ResolversTypes["Int"], ParentType, ContextType>;
   splitFirstHalfOperation?: Resolver<
     Maybe<ResolversTypes["TextChunkModifyOperation"]>,
@@ -691,12 +693,12 @@ export type TextChunkSplitOperationResolvers<
     ContextType
   >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
 export type TextChunkWithOperationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["TextChunkWithOperation"] = ResolversParentTypes["TextChunkWithOperation"]
-> = {
+> = ResolversObject<{
   chunk?: Resolver<ResolversTypes["TextChunk"], ParentType, ContextType>;
   operation?: Resolver<
     Maybe<ResolversTypes["TextChunkOperation"]>,
@@ -704,12 +706,12 @@ export type TextChunkWithOperationResolvers<
     ContextType
   >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
 export type TutorialResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Tutorial"] = ResolversParentTypes["Tutorial"]
-> = {
+> = ResolversObject<{
   id?: Resolver<Maybe<ResolversTypes["ID"]>, ParentType, ContextType>;
   pages?: Resolver<
     Maybe<Array<Maybe<ResolversTypes["Page"]>>>,
@@ -718,12 +720,12 @@ export type TutorialResolvers<
   >;
   title?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
 export type VideoResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Video"] = ResolversParentTypes["Video"]
-> = {
+> = ResolversObject<{
   caption?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   platform?: Resolver<
     Maybe<ResolversTypes["VideoPlatform"]>,
@@ -732,9 +734,9 @@ export type VideoResolvers<
   >;
   url?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
-export type Resolvers<ContextType = any> = {
+export type Resolvers<ContextType = any> = ResolversObject<{
   Action?: ActionResolvers<ContextType>;
   Command?: CommandResolvers<ContextType>;
   CommandAndOutput?: CommandAndOutputResolvers<ContextType>;
@@ -758,4 +760,4 @@ export type Resolvers<ContextType = any> = {
   TextChunkWithOperation?: TextChunkWithOperationResolvers<ContextType>;
   Tutorial?: TutorialResolvers<ContextType>;
   Video?: VideoResolvers<ContextType>;
-};
+}>;

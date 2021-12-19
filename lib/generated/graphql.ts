@@ -121,7 +121,6 @@ export type Query = {
 };
 
 export type QueryTutorialArgs = {
-  currentPageNum: InputMaybe<Scalars["String"]>;
   id: Scalars["String"];
 };
 
