@@ -1,0 +1,25 @@
+{
+  "title": "VcXsrvのインストール",
+  "id": "4",
+  "pageNum": "4",
+  "prevPageNum": "3",
+  "nextPageNum": "5",
+  "progress": {
+    "numPages": 7,
+    "currentPageNum": 4
+  },
+  "pageElements": [
+    {
+      "__typename": "Paragraph",
+      "chunks": [
+        {
+          "text": "WSL2から直接WindowsのWebブラウザを立ち上げることはできません。そこで必要になるのがXサーバーです。Unix/Linux系のOSではGUI環境を実現するために広く使われるXサーバーですが、WSL環境ではWindows側でXサーバーを起動します。"
+        }
+      ]
+    },
+    {
+      "__typename": "Image",
+      "url": "https://blog-jp.richardimaoka.net/images/20210411/vcxsrv-or-not.png"
+    }
+  ]
+}

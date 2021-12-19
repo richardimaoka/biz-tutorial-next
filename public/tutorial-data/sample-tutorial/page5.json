@@ -1,0 +1,45 @@
+{
+  "title": "Windows Defender FireWallの設定",
+  "id": "5",
+  "pageNum": "5",
+  "prevPageNum": "4",
+  "progress": {
+    "numPages": 7,
+    "currentPageNum": 5
+  },
+  "pageElements": [
+    {
+      "__typename": "Action",
+      "paragraph": {
+        "__typename": "Paragraph",
+        "chunks": [
+          {
+            "__typename": "TextChunk",
+            "text": "スクリーンショットに従ってWindows Defender ファイアウオールの設定を更新してください。"
+          }
+        ]
+      }
+    },
+    {
+      "__typename": "ImageGroup",
+      "images": [
+        {
+          "__typename": "Image",
+          "url": "https://blog-jp.richardimaoka.net/images/20210411/xlaunch.png"
+        },
+        {
+          "__typename": "Image",
+          "url": "https://blog-jp.richardimaoka.net/images/20210411/vcxsrv-prompt1.png"
+        },
+        {
+          "__typename": "Image",
+          "url": "https://blog-jp.richardimaoka.net/images/20210411/vcxsrv-prompt2.png"
+        },
+        {
+          "__typename": "Image",
+          "url": "https://blog-jp.richardimaoka.net/images/20210411/vcxsrv-prompt3.png"
+        }
+      ]
+    }
+  ]
+}

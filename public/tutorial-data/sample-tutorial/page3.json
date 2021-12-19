@@ -1,0 +1,84 @@
+{
+  "title": "Cypressのintallとverify",
+  "id": "3",
+  "pageNum": "3",
+  "prevPageNum": "2",
+  "nextPageNum": "4",
+  "progress": {
+    "numPages": 7,
+    "currentPageNum": 3
+  },
+  "pageElements": [
+    {
+      "__typename": "Paragraph",
+      "chunks": [
+        {
+          "text": "まずはCypressを使うために必要なaptパッケージをインストールします。"
+        }
+      ]
+    },
+    {
+      "__typename": "Action",
+      "paragraph": {
+        "__typename": "Paragraph",
+        "chunks": [
+          {
+            "text": "以下のコマンドを実行してください。"
+          }
+        ]
+      }
+    },
+    {
+      "__typename": "Foldable",
+      "shortDescription": "実行結果: ファイル構成の変化",
+      "elements": []
+    },
+    {
+      "__typename": "Action",
+      "paragraph": {
+        "__typename": "Paragraph",
+        "chunks": [
+          {
+            "text": "以下の一連のコマンドを実行してください。"
+          }
+        ]
+      }
+    },
+    {
+      "__typename": "Command",
+      "command": "mkdir /your/project/path"
+    },
+    {
+      "__typename": "Command",
+      "command": "cd /your/project/path"
+    },
+    {
+      "__typename": "Command",
+      "command": "npm install cypress --save-dev"
+    },
+    {
+      "__typename": "Foldable",
+      "shortDescription": "実行結果: ファイル構成の変化",
+      "elements": []
+    },
+    {
+      "__typename": "Action",
+      "paragraph": {
+        "__typename": "Paragraph",
+        "chunks": [
+          {
+            "text": "以下のコマンドを実行してください。"
+          }
+        ]
+      }
+    },
+    {
+      "__typename": "Command",
+      "command": "npx cypress verify"
+    },
+    {
+      "__typename": "Output",
+      "body": "✔  Verified Cypress! /home/richardimaoka/.cache/Cypress/6.8.0/Cypress"
+    }
+  ]
+}

@@ -149,8 +149,8 @@ const apolloServer = new ApolloServer({
   mocks: true,
   context: async ({ req }: any) => {
     try {
-      const pkg = await readJson("sample-1", "page1.json");
-      console.log(pkg);
+      const pkg = await readJson("sample-tutorial", "page1.json");
+      // console.log(pkg);
       return {};
     } catch (err) {
       console.log("***ERROR OCURRED***");
@@ -162,7 +162,7 @@ const apolloServer = new ApolloServer({
 const startServer = apolloServer.start();
 
 const readJson = async (dirname: string, filename: string): Promise<any> => {
-  const filepath = path.resolve("./public", "dir", dirname, filename);
+  const filepath = path.resolve("./public", "tutorial-data", dirname, filename);
   const fileContent = await fs.promises.readFile(filepath, "utf8");
   const jsonData = JSON.parse(fileContent);
   return jsonData;

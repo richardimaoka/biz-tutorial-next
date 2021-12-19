@@ -1,1 +1,78 @@
-{}
+{
+  "title": "概要",
+  "id": "1",
+  "pageNum": "1",
+  "nextPageNum": "2",
+  "progress": {
+    "numPages": 7,
+    "currentPageNum": 1
+  },
+  "pageElements": [
+    {
+      "__typename": "Paragraph",
+      "chunks": [
+        {
+          "text": "Cypressはフロントエンドのend-to-endテストフレームワークの代表格です。"
+        },
+        {
+          "text": "cypress open",
+          "inlineCode": true
+        },
+        {
+          "text": "コマンドを実行すると実際のブラウザ上で高速にテストを完了する動作の軽快さや、充実した各種機能は、フロントエンドのテスト駆動開発を推進するのにピッタリなツールです。"
+        }
+      ]
+    },
+    {
+      "__typename": "Video",
+      "url": "https://player.vimeo.com/video/237527670?h=5c82f4424c&title=0&byline=0&portrait=0",
+      "platform": "VIMEO",
+      "caption": "この軽快な動作を見ていただきたいです！ https://vimeo.com/237527670"
+    },
+    {
+      "__typename": "Paragraph",
+      "chunks": [
+        {
+          "text": "そんなCypressですが、Windows Subsystem for Linux2(以下WSL2)上では、単純にインストールするだけでは動作せず、いくつかのWSL2独自の設定が必要です。"
+        }
+      ]
+    },
+    {
+      "__typename": "ImageGroup",
+      "images": [
+        {
+          "url": "https://blog-jp.richardimaoka.net/images/20210411/cypress-not-working.gif",
+          "caption": "この後何も起こりません、ブラウザが自動で立ち上がってほしいのですが"
+        }
+      ]
+    },
+    {
+      "__typename": "Paragraph",
+      "chunks": [
+        {
+          "text": "この記事では、私がこの問題をどう解決したか、問題と解決策の技術的背景とともにお伝えします。"
+        }
+      ]
+    },
+    {
+      "__typename": "Foldable",
+      "shortDescription": "注意点: WSL1での問題",
+      "elements": [
+        {
+          "__typename": "Paragraph",
+          "chunks": [
+            {
+              "__typename": "TextChunk",
+              "text": "ここで紹介する解決法はWSL2向けであって、WSL1ではまた別の問題が発生するようです。(GitHub: Cypressのレポジトリ内のイシューを「wsl」で検索した一覧) WSL2上でCypressを動かせなくて苦労した人は私以外にもいるようで、Twitter検索でも何人か見かけました。WSL2で快適にフロントエンドのテスト駆動開発をしたい人に向けて、この記事が助けになれば幸いです。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__typename": "Foldable",
+      "shortDescription": "良いニュース:将来はこの記事で紹介する面倒な手順は必要なくなります",
+      "elements": []
+    }
+  ]
+}
