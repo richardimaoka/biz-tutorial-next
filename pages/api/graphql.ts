@@ -109,6 +109,30 @@ const typeDefs = gql`
   type Note {
     body: String
   }
+  type TextChunkModifyOperation {
+    bold: Boolean
+    highlight: Boolean
+    hyperlinkUrl: String
+    strikeout: Boolean
+    text: String
+  }
+
+  type TextChunkSplitOperation {
+    splitAt: Int!
+    splitFirstHalfOperation: TextChunkModifyOperation
+    splitSecondHalfOperation: TextChunkModifyOperation
+  }
+
+  union TextChunkOperation = TextChunkModifyOperation | TextChunkSplitOperation
+
+  type TextChunkWithOperation {
+    chunk: TextChunk!
+    operation: TextChunkOperation
+  }
+
+  type DecorateTextChunksInput {
+    chunks: [TextChunkWithOperation]!
+  }
 `;
 
 const resolvers = {

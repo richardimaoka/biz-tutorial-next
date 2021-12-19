@@ -1,12 +1,15 @@
 import { gql } from "@apollo/client";
-import { useGetTutorialQuery } from "../lib/generated/graphql";
+import { Outlet } from "react-router";
+import { useGetTutorialQuery } from "./generated/graphql";
+import { HeaderContainer } from "./HeaderContainer";
 
 //This is read by GraphQL codegen to generate types
 gql`
   query GetTutorial {
-    tutorial(id: "wsl") {
-      __typename
+    tutorial (id: "wsl"){
+      ...HeaderContainer
     }
+    ${HeaderContainer.fragments}
   }
 `;
 
@@ -24,7 +27,8 @@ export const TutorialComponent = (): JSX.Element => {
   } else {
     return (
       <>
-        <div>aaaaaaa tutorial</div>
+        <HeaderContainer fragment={data.tutorial}></HeaderContainer>
+        <Outlet />
       </>
     );
   }
