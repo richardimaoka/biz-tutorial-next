@@ -10,7 +10,6 @@ const typeDefs = gql`
     id: ID
     title: String
     pages: [Page]
-    currentPage: Page
   }
 
   type Page {
