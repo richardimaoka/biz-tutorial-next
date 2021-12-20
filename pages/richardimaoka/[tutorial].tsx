@@ -21,9 +21,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 export const getStaticPaths: GetStaticPaths<StaticPathProps> = async () => {
   let pathParams: StaticPathParams[] = [];
   // `pathParams` will be = [
-  //    { params: { user: userDirName, tutorial: fileName } },
-  //    { params: { user: userDirName, tutorial: fileName } },
-  //    { params: { user: userDirName, tutorial: fileName } }
+  //    { params: { user: "richardimaoka", tutorial: fileName } },
+  //    { params: { user: "richardimaoka", tutorial: fileName } },
+  //    { params: { user: "richardimaoka", tutorial: fileName } }
   // ]
 
   const userDirs = fs.readdirSync(path.resolve("public", "tutorial-data"));

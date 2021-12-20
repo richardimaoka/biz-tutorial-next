@@ -138,8 +138,9 @@ const typeDefs = gql`
 
 const resolvers: Resolvers = {
   Query: {
-    tutorial: (parent, args, context) => {
+    tutorial: async (parent, args, context) => {
       const tutorialId = args.id;
+      const pkg = await readJson(tutorialId, "page1.json");
 
       return {};
     },
@@ -155,7 +156,6 @@ const apolloServer = new ApolloServer({
   mocks: true,
   context: async ({ req }: any) => {
     try {
-      const pkg = await readJson("sample-tutorial", "page1.json");
       // console.log(pkg);
       return {};
     } catch (err) {
