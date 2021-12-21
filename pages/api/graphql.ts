@@ -86,6 +86,7 @@ const readTutorialJson = async (
   };
 };
 
+//@ts-ignore
 const resolvers: Resolvers = {
   Query: {
     tutorial: async (_, args, context) => {
