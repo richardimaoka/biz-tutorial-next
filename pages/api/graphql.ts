@@ -61,17 +61,27 @@ const readPageJsonFiles = async (
   return pages;
 };
 
+const readTutorialJsonFile = async (
+  authorId: string,
+  tutorialId: string
+): Promise<any> => {
+  const tutorialDir = resolveTutorialDir(authorId, tutorialId);
+  const tutorialObj = await readJsonFile(tutorialDir, "tutorial.json");
+  return tutorialObj;
+};
+
 const readTutorialJson = async (
   authorId: string,
   tutorialId: string
 ): Promise<Tutorial> => {
+  const tutorial = await readTutorialJsonFile(authorId, tutorialId);
   const pages = await readPageJsonFiles(authorId, tutorialId);
   return {
     id: tutorialId,
     author: {
       id: authorId,
     },
-    title: "the tutorial title",
+    title: tutorial.title,
     pages: pages,
   };
 };
