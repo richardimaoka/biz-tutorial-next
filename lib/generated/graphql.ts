@@ -1,9 +1,12 @@
+import { GraphQLResolveInfo } from 'graphql';
 import { gql } from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+export type RequireFields<T, K extends keyof T> = { [X in Exclude<keyof T, K>]?: T[X] } & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -359,3 +362,306 @@ ${ActionComponentFragmentDoc}
 ${CommandComponentFragmentDoc}
 ${OutputComponentFragmentDoc}
 ${ImageComponentFragmentDoc}`;
+export type WithIndex<TObject> = TObject & Record<string, any>;
+export type ResolversObject<TObject> = WithIndex<TObject>;
+
+export type ResolverTypeWrapper<T> = Promise<T> | T;
+
+
+export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
+  resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
+};
+export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> = ResolverFn<TResult, TParent, TContext, TArgs> | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
+
+export type ResolverFn<TResult, TParent, TContext, TArgs> = (
+  parent: TParent,
+  args: TArgs,
+  context: TContext,
+  info: GraphQLResolveInfo
+) => Promise<TResult> | TResult;
+
+export type SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs> = (
+  parent: TParent,
+  args: TArgs,
+  context: TContext,
+  info: GraphQLResolveInfo
+) => AsyncIterable<TResult> | Promise<AsyncIterable<TResult>>;
+
+export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
+  parent: TParent,
+  args: TArgs,
+  context: TContext,
+  info: GraphQLResolveInfo
+) => TResult | Promise<TResult>;
+
+export interface SubscriptionSubscriberObject<TResult, TKey extends string, TParent, TContext, TArgs> {
+  subscribe: SubscriptionSubscribeFn<{ [key in TKey]: TResult }, TParent, TContext, TArgs>;
+  resolve?: SubscriptionResolveFn<TResult, { [key in TKey]: TResult }, TContext, TArgs>;
+}
+
+export interface SubscriptionResolverObject<TResult, TParent, TContext, TArgs> {
+  subscribe: SubscriptionSubscribeFn<any, TParent, TContext, TArgs>;
+  resolve: SubscriptionResolveFn<TResult, any, TContext, TArgs>;
+}
+
+export type SubscriptionObject<TResult, TKey extends string, TParent, TContext, TArgs> =
+  | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
+  | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
+
+export type SubscriptionResolver<TResult, TKey extends string, TParent = {}, TContext = {}, TArgs = {}> =
+  | ((...args: any[]) => SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>)
+  | SubscriptionObject<TResult, TKey, TParent, TContext, TArgs>;
+
+export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
+  parent: TParent,
+  context: TContext,
+  info: GraphQLResolveInfo
+) => Maybe<TTypes> | Promise<Maybe<TTypes>>;
+
+export type IsTypeOfResolverFn<T = {}, TContext = {}> = (obj: T, context: TContext, info: GraphQLResolveInfo) => boolean | Promise<boolean>;
+
+export type NextResolverFn<T> = () => Promise<T>;
+
+export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs = {}> = (
+  next: NextResolverFn<TResult>,
+  parent: TParent,
+  args: TArgs,
+  context: TContext,
+  info: GraphQLResolveInfo
+) => TResult | Promise<TResult>;
+
+/** Mapping between all available schema types and the resolvers types */
+export type ResolversTypes = ResolversObject<{
+  Action: ResolverTypeWrapper<Action>;
+  Author: ResolverTypeWrapper<Author>;
+  Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Command: ResolverTypeWrapper<Command>;
+  CommandAndOutput: ResolverTypeWrapper<CommandAndOutput>;
+  DecorateTextChunksInput: ResolverTypeWrapper<DecorateTextChunksInput>;
+  DirectoryStructure: ResolverTypeWrapper<DirectoryStructure>;
+  Foldable: ResolverTypeWrapper<Omit<Foldable, 'elements'> & { elements: Maybe<Array<Maybe<ResolversTypes['PlainElement']>>> }>;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
+  Image: ResolverTypeWrapper<Image>;
+  ImageGroup: ResolverTypeWrapper<ImageGroup>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
+  Note: ResolverTypeWrapper<Note>;
+  Output: ResolverTypeWrapper<Output>;
+  Page: ResolverTypeWrapper<Omit<Page, 'pageElements'> & { pageElements: Maybe<Array<Maybe<ResolversTypes['PageElement']>>> }>;
+  PageElement: ResolversTypes['Action'] | ResolversTypes['Command'] | ResolversTypes['Foldable'] | ResolversTypes['Image'] | ResolversTypes['ImageGroup'] | ResolversTypes['Output'] | ResolversTypes['Paragraph'] | ResolversTypes['Video'];
+  Paragraph: ResolverTypeWrapper<Paragraph>;
+  PlainElement: ResolversTypes['Action'] | ResolversTypes['Command'] | ResolversTypes['Image'] | ResolversTypes['ImageGroup'] | ResolversTypes['Output'] | ResolversTypes['Paragraph'] | ResolversTypes['Video'];
+  Progress: ResolverTypeWrapper<Progress>;
+  Query: ResolverTypeWrapper<{}>;
+  String: ResolverTypeWrapper<Scalars['String']>;
+  TextChunk: ResolverTypeWrapper<TextChunk>;
+  TextChunkModifyOperation: ResolverTypeWrapper<TextChunkModifyOperation>;
+  TextChunkOperation: ResolversTypes['TextChunkModifyOperation'] | ResolversTypes['TextChunkSplitOperation'];
+  TextChunkSplitOperation: ResolverTypeWrapper<TextChunkSplitOperation>;
+  TextChunkWithOperation: ResolverTypeWrapper<Omit<TextChunkWithOperation, 'operation'> & { operation: Maybe<ResolversTypes['TextChunkOperation']> }>;
+  Tutorial: ResolverTypeWrapper<Tutorial>;
+  Video: ResolverTypeWrapper<Video>;
+  VideoPlatform: VideoPlatform;
+}>;
+
+/** Mapping between all available schema types and the resolvers parents */
+export type ResolversParentTypes = ResolversObject<{
+  Action: Action;
+  Author: Author;
+  Boolean: Scalars['Boolean'];
+  Command: Command;
+  CommandAndOutput: CommandAndOutput;
+  DecorateTextChunksInput: DecorateTextChunksInput;
+  DirectoryStructure: DirectoryStructure;
+  Foldable: Omit<Foldable, 'elements'> & { elements: Maybe<Array<Maybe<ResolversParentTypes['PlainElement']>>> };
+  ID: Scalars['ID'];
+  Image: Image;
+  ImageGroup: ImageGroup;
+  Int: Scalars['Int'];
+  Note: Note;
+  Output: Output;
+  Page: Omit<Page, 'pageElements'> & { pageElements: Maybe<Array<Maybe<ResolversParentTypes['PageElement']>>> };
+  PageElement: ResolversParentTypes['Action'] | ResolversParentTypes['Command'] | ResolversParentTypes['Foldable'] | ResolversParentTypes['Image'] | ResolversParentTypes['ImageGroup'] | ResolversParentTypes['Output'] | ResolversParentTypes['Paragraph'] | ResolversParentTypes['Video'];
+  Paragraph: Paragraph;
+  PlainElement: ResolversParentTypes['Action'] | ResolversParentTypes['Command'] | ResolversParentTypes['Image'] | ResolversParentTypes['ImageGroup'] | ResolversParentTypes['Output'] | ResolversParentTypes['Paragraph'] | ResolversParentTypes['Video'];
+  Progress: Progress;
+  Query: {};
+  String: Scalars['String'];
+  TextChunk: TextChunk;
+  TextChunkModifyOperation: TextChunkModifyOperation;
+  TextChunkOperation: ResolversParentTypes['TextChunkModifyOperation'] | ResolversParentTypes['TextChunkSplitOperation'];
+  TextChunkSplitOperation: TextChunkSplitOperation;
+  TextChunkWithOperation: Omit<TextChunkWithOperation, 'operation'> & { operation: Maybe<ResolversParentTypes['TextChunkOperation']> };
+  Tutorial: Tutorial;
+  Video: Video;
+}>;
+
+export type ActionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Action'] = ResolversParentTypes['Action']> = ResolversObject<{
+  paragraph: Resolver<Maybe<ResolversTypes['Paragraph']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type AuthorResolvers<ContextType = any, ParentType extends ResolversParentTypes['Author'] = ResolversParentTypes['Author']> = ResolversObject<{
+  id: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type CommandResolvers<ContextType = any, ParentType extends ResolversParentTypes['Command'] = ResolversParentTypes['Command']> = ResolversObject<{
+  command: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type CommandAndOutputResolvers<ContextType = any, ParentType extends ResolversParentTypes['CommandAndOutput'] = ResolversParentTypes['CommandAndOutput']> = ResolversObject<{
+  command: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  output: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type DecorateTextChunksInputResolvers<ContextType = any, ParentType extends ResolversParentTypes['DecorateTextChunksInput'] = ResolversParentTypes['DecorateTextChunksInput']> = ResolversObject<{
+  chunks: Resolver<Array<Maybe<ResolversTypes['TextChunkWithOperation']>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type DirectoryStructureResolvers<ContextType = any, ParentType extends ResolversParentTypes['DirectoryStructure'] = ResolversParentTypes['DirectoryStructure']> = ResolversObject<{
+  contents: Resolver<Maybe<Array<Maybe<ResolversTypes['String']>>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type FoldableResolvers<ContextType = any, ParentType extends ResolversParentTypes['Foldable'] = ResolversParentTypes['Foldable']> = ResolversObject<{
+  elements: Resolver<Maybe<Array<Maybe<ResolversTypes['PlainElement']>>>, ParentType, ContextType>;
+  shortDescription: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ImageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Image'] = ResolversParentTypes['Image']> = ResolversObject<{
+  caption: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  url: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ImageGroupResolvers<ContextType = any, ParentType extends ResolversParentTypes['ImageGroup'] = ResolversParentTypes['ImageGroup']> = ResolversObject<{
+  images: Resolver<Maybe<Array<Maybe<ResolversTypes['Image']>>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type NoteResolvers<ContextType = any, ParentType extends ResolversParentTypes['Note'] = ResolversParentTypes['Note']> = ResolversObject<{
+  body: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type OutputResolvers<ContextType = any, ParentType extends ResolversParentTypes['Output'] = ResolversParentTypes['Output']> = ResolversObject<{
+  body: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type PageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Page'] = ResolversParentTypes['Page']> = ResolversObject<{
+  id: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  nextPageNum: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  pageElements: Resolver<Maybe<Array<Maybe<ResolversTypes['PageElement']>>>, ParentType, ContextType>;
+  pageNum: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  prevPageNum: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  progress: Resolver<Maybe<ResolversTypes['Progress']>, ParentType, ContextType>;
+  title: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type PageElementResolvers<ContextType = any, ParentType extends ResolversParentTypes['PageElement'] = ResolversParentTypes['PageElement']> = ResolversObject<{
+  __resolveType: TypeResolveFn<'Action' | 'Command' | 'Foldable' | 'Image' | 'ImageGroup' | 'Output' | 'Paragraph' | 'Video', ParentType, ContextType>;
+}>;
+
+export type ParagraphResolvers<ContextType = any, ParentType extends ResolversParentTypes['Paragraph'] = ResolversParentTypes['Paragraph']> = ResolversObject<{
+  chunks: Resolver<Maybe<Array<Maybe<ResolversTypes['TextChunk']>>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type PlainElementResolvers<ContextType = any, ParentType extends ResolversParentTypes['PlainElement'] = ResolversParentTypes['PlainElement']> = ResolversObject<{
+  __resolveType: TypeResolveFn<'Action' | 'Command' | 'Image' | 'ImageGroup' | 'Output' | 'Paragraph' | 'Video', ParentType, ContextType>;
+}>;
+
+export type ProgressResolvers<ContextType = any, ParentType extends ResolversParentTypes['Progress'] = ResolversParentTypes['Progress']> = ResolversObject<{
+  currentPageNum: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  numPages: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  tutorial: Resolver<Maybe<ResolversTypes['Tutorial']>, ParentType, ContextType, RequireFields<QueryTutorialArgs, 'authorId' | 'tutorialId'>>;
+}>;
+
+export type TextChunkResolvers<ContextType = any, ParentType extends ResolversParentTypes['TextChunk'] = ResolversParentTypes['TextChunk']> = ResolversObject<{
+  bold: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  highlight: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  hyperlinkUrl: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  inlineCode: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  strikeout: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  text: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type TextChunkModifyOperationResolvers<ContextType = any, ParentType extends ResolversParentTypes['TextChunkModifyOperation'] = ResolversParentTypes['TextChunkModifyOperation']> = ResolversObject<{
+  bold: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  highlight: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  hyperlinkUrl: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  strikeout: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  text: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type TextChunkOperationResolvers<ContextType = any, ParentType extends ResolversParentTypes['TextChunkOperation'] = ResolversParentTypes['TextChunkOperation']> = ResolversObject<{
+  __resolveType: TypeResolveFn<'TextChunkModifyOperation' | 'TextChunkSplitOperation', ParentType, ContextType>;
+}>;
+
+export type TextChunkSplitOperationResolvers<ContextType = any, ParentType extends ResolversParentTypes['TextChunkSplitOperation'] = ResolversParentTypes['TextChunkSplitOperation']> = ResolversObject<{
+  splitAt: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  splitFirstHalfOperation: Resolver<Maybe<ResolversTypes['TextChunkModifyOperation']>, ParentType, ContextType>;
+  splitSecondHalfOperation: Resolver<Maybe<ResolversTypes['TextChunkModifyOperation']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type TextChunkWithOperationResolvers<ContextType = any, ParentType extends ResolversParentTypes['TextChunkWithOperation'] = ResolversParentTypes['TextChunkWithOperation']> = ResolversObject<{
+  chunk: Resolver<ResolversTypes['TextChunk'], ParentType, ContextType>;
+  operation: Resolver<Maybe<ResolversTypes['TextChunkOperation']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type TutorialResolvers<ContextType = any, ParentType extends ResolversParentTypes['Tutorial'] = ResolversParentTypes['Tutorial']> = ResolversObject<{
+  author: Resolver<Maybe<ResolversTypes['Author']>, ParentType, ContextType>;
+  id: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  pages: Resolver<Maybe<Array<Maybe<ResolversTypes['Page']>>>, ParentType, ContextType>;
+  title: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type VideoResolvers<ContextType = any, ParentType extends ResolversParentTypes['Video'] = ResolversParentTypes['Video']> = ResolversObject<{
+  caption: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  platform: Resolver<Maybe<ResolversTypes['VideoPlatform']>, ParentType, ContextType>;
+  url: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type Resolvers<ContextType = any> = ResolversObject<{
+  Action: ActionResolvers<ContextType>;
+  Author: AuthorResolvers<ContextType>;
+  Command: CommandResolvers<ContextType>;
+  CommandAndOutput: CommandAndOutputResolvers<ContextType>;
+  DecorateTextChunksInput: DecorateTextChunksInputResolvers<ContextType>;
+  DirectoryStructure: DirectoryStructureResolvers<ContextType>;
+  Foldable: FoldableResolvers<ContextType>;
+  Image: ImageResolvers<ContextType>;
+  ImageGroup: ImageGroupResolvers<ContextType>;
+  Note: NoteResolvers<ContextType>;
+  Output: OutputResolvers<ContextType>;
+  Page: PageResolvers<ContextType>;
+  PageElement: PageElementResolvers<ContextType>;
+  Paragraph: ParagraphResolvers<ContextType>;
+  PlainElement: PlainElementResolvers<ContextType>;
+  Progress: ProgressResolvers<ContextType>;
+  Query: QueryResolvers<ContextType>;
+  TextChunk: TextChunkResolvers<ContextType>;
+  TextChunkModifyOperation: TextChunkModifyOperationResolvers<ContextType>;
+  TextChunkOperation: TextChunkOperationResolvers<ContextType>;
+  TextChunkSplitOperation: TextChunkSplitOperationResolvers<ContextType>;
+  TextChunkWithOperation: TextChunkWithOperationResolvers<ContextType>;
+  Tutorial: TutorialResolvers<ContextType>;
+  Video: VideoResolvers<ContextType>;
+}>;
+

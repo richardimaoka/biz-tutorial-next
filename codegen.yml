@@ -7,14 +7,10 @@ generates:
       - "typescript"
       - "typescript-operations"
       - "typescript-react-apollo"
+      - typescript-resolvers
     config:
       avoidOptionals: true
-  lib/generated/graphql-resolver.ts:
-    config:
       useIndexSignature: true
-    plugins:
-      - typescript
-      - typescript-resolvers
 hooks:
   afterOneFileWrite:
     - npx prettier --write

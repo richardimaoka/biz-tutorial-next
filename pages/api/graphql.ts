@@ -2,7 +2,7 @@ import { ApolloServer, gql } from "apollo-server-micro";
 import fs from "fs";
 import path from "path";
 import { Tutorial } from "../../lib/generated/graphql";
-import { Resolvers } from "./../../lib/generated/graphql-resolver";
+import { Page, Resolvers } from "./../../lib/generated/graphql";
 
 const typeDefs = gql`
   ${fs.readFileSync(path.resolve("schema.gql"), "utf8")}
@@ -75,7 +75,7 @@ const readTutorialJson = async (
   tutorialId: string
 ): Promise<Tutorial> => {
   const tutorial = await readTutorialJsonFile(authorId, tutorialId);
-  const pages = await readPageJsonFiles(authorId, tutorialId);
+  const pages: Page[] = await readPageJsonFiles(authorId, tutorialId);
   return {
     id: tutorialId,
     author: {
