@@ -1,159 +1,89 @@
 import { ApolloServer, gql } from "apollo-server-micro";
 import fs from "fs";
 import path from "path";
+import { Tutorial } from "../../lib/generated/graphql";
 import { Resolvers } from "./../../lib/generated/graphql-resolver";
 
 const typeDefs = gql`
-  type Query {
-    tutorial(id: String!): Tutorial
-  }
-
-  type Tutorial {
-    id: ID
-    title: String
-    pages: [Page]
-  }
-
-  type Page {
-    id: ID
-    pageNum: String
-    nextPageNum: String
-    prevPageNum: String
-    title: String
-    progress: Progress
-    pageElements: [PageElement]
-  }
-
-  union PageElement =
-      Paragraph
-    | Command
-    | Output
-    | Video
-    | Action
-    | ImageGroup
-    | Image
-    | Foldable
-
-  union PlainElement =
-      Paragraph
-    | Command
-    | Output
-    | Video
-    | Action
-    | ImageGroup
-    | Image
-
-  enum VideoPlatform {
-    YOUTUBE
-    VIMEO
-  }
-
-  type Video {
-    platform: VideoPlatform
-    url: String
-    caption: String
-  }
-
-  type ImageGroup {
-    images: [Image]
-  }
-
-  type Image {
-    url: String
-    caption: String
-  }
-
-  type Output {
-    body: String
-  }
-
-  type Progress {
-    numPages: Int
-    currentPageNum: Int
-  }
-
-  type Paragraph {
-    chunks: [TextChunk]
-  }
-
-  type Action {
-    paragraph: Paragraph
-  }
-
-  type TextChunk {
-    text: String
-    highlight: Boolean
-    bold: Boolean
-    hyperlinkUrl: String
-    strikeout: Boolean
-    inlineCode: Boolean
-  }
-
-  type Foldable {
-    shortDescription: String
-    elements: [PlainElement]
-  }
-
-  type Command {
-    command: String
-  }
-
-  type CommandAndOutput {
-    command: String
-    output: String
-  }
-
-  type DirectoryStructure {
-    contents: [String]
-  }
-
-  type Note {
-    body: String
-  }
-  type TextChunkModifyOperation {
-    bold: Boolean
-    highlight: Boolean
-    hyperlinkUrl: String
-    strikeout: Boolean
-    text: String
-  }
-
-  type TextChunkSplitOperation {
-    splitAt: Int!
-    splitFirstHalfOperation: TextChunkModifyOperation
-    splitSecondHalfOperation: TextChunkModifyOperation
-  }
-
-  union TextChunkOperation = TextChunkModifyOperation | TextChunkSplitOperation
-
-  type TextChunkWithOperation {
-    chunk: TextChunk!
-    operation: TextChunkOperation
-  }
-
-  type DecorateTextChunksInput {
-    chunks: [TextChunkWithOperation]!
-  }
+  ${fs.readFileSync(path.resolve("schema.gql"), "utf8")}
 `;
+
+const resolveTutorialDir = (authorId: string, tutorialId: string): string => {
+  return path.resolve("./public", "tutorial-data", authorId, tutorialId);
+};
+
+const fileNamesInDir = async (dirName: string): Promise<string[]> => {
+  return new Promise<string[]>((resolve, reject) => {
+    fs.readdir(dirName, (err, files) => {
+      if (err) return reject(err);
+      else return resolve(files);
+    });
+  });
+};
+
+const regExJson = /page\d*\.json/;
+const isPageJsonFile = (fileName: string): boolean => {
+  return regExJson.test(fileName);
+};
+
+const readJsonFile = async (
+  dirName: string,
+  fileName: string
+): Promise<any> => {
+  const filepath = path.resolve(dirName, fileName);
+  const fileContent = await fs.promises.readFile(filepath, "utf8");
+  const jsonData = JSON.parse(fileContent);
+  return jsonData;
+};
+
+const readPageJsonFiles = async (
+  authorId: string,
+  tutorialId: string
+): Promise<any[]> => {
+  const tutorialDir = resolveTutorialDir(authorId, tutorialId);
+  const fileNames = await fileNamesInDir(tutorialDir);
+  const jsonFiles = fileNames.filter(isPageJsonFile);
+
+  let pages = [];
+  for (const jsonFile of jsonFiles) {
+    const pageObj = await readJsonFile(tutorialDir, jsonFile);
+    pages.push(pageObj);
+  }
+
+  return pages;
+};
+
+const readTutorialJson = async (authorId: string, tutorialId: string) => {
+  try {
+    const pages = readPageJsonFiles(authorId, tutorialId);
+    return {
+      id: tutorialId,
+      author: {
+        id: authorId,
+      },
+      title: "the tutorial title",
+      pages: pages,
+    };
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
 
 const resolvers: Resolvers = {
   Query: {
-    tutorial: async (parent, args, context) => {
-      const tutorialId = args.id;
-      const pkg = await readJson(tutorialId, "page1.json");
-
-      return {};
+    tutorial: async (_, args, context) => {
+      const authorId = args.authorId;
+      const tutorialId = args.tutorialId;
+      const data = await readTutorialJson(authorId, tutorialId);
+      return data;
     },
-    // users(parent, args, context) {
-    //   return [{ name: "Nextjs" }];
-    // },
   },
 };
 
 const apolloServer = new ApolloServer({
   typeDefs,
   resolvers,
-  mocks: true,
   context: async ({ req }: any) => {
     try {
       // console.log(pkg);
@@ -166,13 +96,6 @@ const apolloServer = new ApolloServer({
 });
 
 const startServer = apolloServer.start();
-
-const readJson = async (dirname: string, filename: string): Promise<any> => {
-  const filepath = path.resolve("./public", "tutorial-data", dirname, filename);
-  const fileContent = await fs.promises.readFile(filepath, "utf8");
-  const jsonData = JSON.parse(fileContent);
-  return jsonData;
-};
 
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Credentials", "true");

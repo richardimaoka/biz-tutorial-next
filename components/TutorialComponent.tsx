@@ -2,13 +2,13 @@ import { gql } from "@apollo/client";
 import { useGetTutorialQuery } from "../lib/generated/graphql";
 
 //This is read by GraphQL codegen to generate types
-gql`
-  query GetTutorial {
-    tutorial(id: "wsl") {
-      __typename
-    }
-  }
-`;
+// gql`
+//   query GetTutorial {
+//     tutorial(id: "wsl") {
+//       __typename
+//     }
+//   }
+// `;
 
 export const TutorialComponent = (): JSX.Element => {
   const { loading, error, data } = useGetTutorialQuery();
