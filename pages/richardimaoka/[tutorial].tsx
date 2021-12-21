@@ -38,25 +38,16 @@ export const getStaticPaths: GetStaticPaths<StaticPathProps> = async () => {
     }
   }
 
-  console.log(pathParams);
+  console.log("pathParams", pathParams);
 
   return {
     paths: pathParams,
-    fallback: true,
+    fallback: false,
   };
 };
 
-//This is read by GraphQL codegen to generate types
-// gql`
-//   query GetTutorial {
-//     tutorial (id: "wsl"){
-//       ...HeaderContainer
-//     }
-//     ${HeaderContainer.fragments}
-//   }
-// `;
-
-const Id = (): JSX.Element => {
+const Id = ({ params }): JSX.Element => {
+  console.log("Id params", params);
   return <div>Id</div>;
 };
 
