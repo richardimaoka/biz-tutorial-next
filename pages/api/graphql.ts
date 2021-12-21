@@ -15,8 +15,10 @@ const resolveTutorialDir = (authorId: string, tutorialId: string): string => {
 const fileNamesInDir = async (dirName: string): Promise<string[]> => {
   return new Promise<string[]>((resolve, reject) => {
     fs.readdir(dirName, (err, files) => {
-      if (err) return reject(err);
-      else return resolve(files);
+      if (err) {
+        console.log(`fileNamesInDir error: no file found in ${dirName}`);
+        return reject(err);
+      } else return resolve(files);
     });
   });
 };
@@ -31,9 +33,15 @@ const readJsonFile = async (
   fileName: string
 ): Promise<any> => {
   const filepath = path.resolve(dirName, fileName);
-  const fileContent = await fs.promises.readFile(filepath, "utf8");
-  const jsonData = JSON.parse(fileContent);
-  return jsonData;
+  try {
+    const fileContent = await fs.promises.readFile(filepath, "utf8");
+    const jsonData = JSON.parse(fileContent);
+    return jsonData;
+  } catch (err) {
+    console.log(`readJsonFile field to read the file ${filepath}`);
+    console.log(err);
+    throw err;
+  }
 };
 
 const readPageJsonFiles = async (
@@ -53,21 +61,19 @@ const readPageJsonFiles = async (
   return pages;
 };
 
-const readTutorialJson = async (authorId: string, tutorialId: string) => {
-  try {
-    const pages = readPageJsonFiles(authorId, tutorialId);
-    return {
-      id: tutorialId,
-      author: {
-        id: authorId,
-      },
-      title: "the tutorial title",
-      pages: pages,
-    };
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
+const readTutorialJson = async (
+  authorId: string,
+  tutorialId: string
+): Promise<Tutorial> => {
+  const pages = await readPageJsonFiles(authorId, tutorialId);
+  return {
+    id: tutorialId,
+    author: {
+      id: authorId,
+    },
+    title: "the tutorial title",
+    pages: pages,
+  };
 };
 
 const resolvers: Resolvers = {
