@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { gql } from "@apollo/client";
 import { css } from "@emotion/react";
-import { OutputComponentFragment } from "./generated/graphql";
+import { OutputComponentFragment } from "../lib/generated/graphql";
 
 export interface OutputComponentProps {
   fragment: OutputComponentFragment;

@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { gql } from "@apollo/client";
 import { css } from "@emotion/react";
-import { CommandComponentFragment } from "./generated/graphql";
+import { CommandComponentFragment } from "../lib/generated/graphql";
 
 interface CommandComponentProps {
   fragment: CommandComponentFragment;

@@ -2,7 +2,7 @@
 import { gql } from "@apollo/client";
 import { css } from "@emotion/react";
 import { Link } from "react-router-dom";
-import { PageTransitionComponentFragment } from "./generated/graphql";
+import { PageTransitionComponentFragment } from "../lib/generated/graphql";
 import { NextPageButton } from "./NextPageButton";
 import { PrevPageButton } from "./PrevPageButton";
 

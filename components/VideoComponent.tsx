@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { gql } from "@apollo/client";
 import { css } from "@emotion/react";
-import { VideoComponentFragment } from "./generated/graphql";
+import { VideoComponentFragment } from "../lib/generated/graphql";
 
 export interface VideoComponentProps {
   fragment: VideoComponentFragment;

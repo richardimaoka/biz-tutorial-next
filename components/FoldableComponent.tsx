@@ -4,7 +4,7 @@ import { gql } from "@apollo/client";
 import { VideoComponent } from "./VideoComponent";
 import { ParagraphComponent } from "./ParagraphComponent";
 import { ImageGroupComponent } from "./ImageGroupComponent";
-import { FoldableComponentFragment } from "./generated/graphql";
+import { FoldableComponentFragment } from "../lib/generated/graphql";
 import React, { useState } from "react";
 import { FoldedIcon } from "./FoldedIcon";
 import { UnfoldedIcon } from "./UnFoldedIcon";

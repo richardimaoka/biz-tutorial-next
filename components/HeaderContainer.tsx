@@ -3,7 +3,7 @@ import { css } from "@emotion/react";
 import { gql } from "@apollo/client";
 import { HeaderTitleComponent } from "./HeaderTitleComponent";
 import { HeaderIcon } from "./HeaderIcon";
-import { HeaderContainerFragment } from "./generated/graphql";
+import { HeaderContainerFragment } from "../lib/generated/graphql";
 
 export interface HeaderContainerProps {
   fragment: HeaderContainerFragment;

@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { PageTitle } from "./PageTitleComponent";
 import { gql } from "@apollo/client";
-import { PageComponentFragment } from "./generated/graphql";
+import { PageComponentFragment } from "../lib/generated/graphql";
 import { VideoComponent } from "./VideoComponent";
 import { ParagraphComponent } from "./ParagraphComponent";
 import { ImageGroupComponent } from "./ImageGroupComponent";

@@ -1,4 +1,4 @@
-import { TextChunk } from "./generated/graphql";
+import { TextChunk } from "../lib/generated/graphql";
 
 export const splitTextChunk = (
   chunk: TextChunk,

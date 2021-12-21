@@ -4,7 +4,7 @@ import { css } from "@emotion/react";
 import { CarouselContent } from "./CarouselContentComponent";
 import { CarouselControlBar } from "./CarouselControlBar";
 import { CarouselDescription } from "./CarouselDescriptionComponent";
-import { CarouselComponentFragment } from "./generated/graphql";
+import { CarouselComponentFragment } from "../lib/generated/graphql";
 
 export interface CarouselComponentProps {
   fragment: CarouselComponentFragment;

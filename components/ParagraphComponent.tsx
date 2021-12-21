@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { gql } from "@apollo/client";
 import { css } from "@emotion/react";
-import { ParagraphComponentFragment } from "./generated/graphql";
+import { ParagraphComponentFragment } from "../lib/generated/graphql";
 import { TextChunkComponent } from "./TextChunkComponent";
 
 interface ParagraphProps {

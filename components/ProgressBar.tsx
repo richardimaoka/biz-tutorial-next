@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import { gql } from "@apollo/client";
-import { ProgressBarFragment } from "./generated/graphql";
+import { ProgressBarFragment } from "../lib/generated/graphql";
 
 export interface ProgressBarProps {
   fragment: ProgressBarFragment;

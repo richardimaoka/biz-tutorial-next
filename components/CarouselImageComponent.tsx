@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { gql } from "@apollo/client";
-import { CarouselImageFragment } from "./generated/graphql";
+import { CarouselImageFragment } from "../lib/generated/graphql";
 
 interface CarouselImageProps {
   fragment: CarouselImageFragment;

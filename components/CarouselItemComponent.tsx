@@ -2,7 +2,7 @@
 import { gql } from "@apollo/client";
 import { css } from "@emotion/react";
 import { CarouselImage } from "./CarouselImageComponent";
-import { CarouselItemFragment } from "./generated/graphql";
+import { CarouselItemFragment } from "../lib/generated/graphql";
 
 interface CarouselItemProps {
   fragment: CarouselItemFragment;

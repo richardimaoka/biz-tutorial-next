@@ -3,7 +3,7 @@ import { css } from "@emotion/react";
 import { ActionLabelComponent } from "./ActionLabelComponent";
 import { ParagraphComponent } from "./ParagraphComponent";
 import { gql } from "@apollo/client";
-import { ActionComponentFragment } from "./generated/graphql";
+import { ActionComponentFragment } from "../lib/generated/graphql";
 
 export interface ActionProps {
   fragment: ActionComponentFragment;
