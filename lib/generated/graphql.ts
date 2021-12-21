@@ -375,8 +375,6 @@ export type OutputComponentFragment = {
 export type PageComponentFragment = {
   __typename?: "Page";
   title: string | null | undefined;
-  nextPageNum: string | null | undefined;
-  prevPageNum: string | null | undefined;
   progress:
     | {
         __typename?: "Progress";
@@ -549,12 +547,6 @@ export type PageComponentFragment = {
     | undefined;
 };
 
-export type PageTransitionComponentFragment = {
-  __typename?: "Page";
-  nextPageNum: string | null | undefined;
-  prevPageNum: string | null | undefined;
-};
-
 export type ParagraphComponentFragment = {
   __typename?: "Paragraph";
   chunks:
@@ -636,12 +628,6 @@ export const CarouselComponentFragmentDoc = gql`
 export const HeaderContainerFragmentDoc = gql`
   fragment HeaderContainer on Tutorial {
     title
-  }
-`;
-export const PageTransitionComponentFragmentDoc = gql`
-  fragment PageTransitionComponent on Page {
-    nextPageNum
-    prevPageNum
   }
 `;
 export const ProgressBarFragmentDoc = gql`
@@ -737,7 +723,6 @@ export const OutputComponentFragmentDoc = gql`
 export const PageComponentFragmentDoc = gql`
   fragment PageComponent on Page {
     title
-    ...PageTransitionComponent
     progress {
       ...ProgressBar
     }
@@ -768,7 +753,6 @@ export const PageComponentFragmentDoc = gql`
       }
     }
   }
-  ${PageTransitionComponentFragmentDoc}
   ${ProgressBarFragmentDoc}
   ${VideoComponentFragmentDoc}
   ${ParagraphComponentFragmentDoc}
