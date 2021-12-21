@@ -547,6 +547,259 @@ export type PageComponentFragment = {
     | undefined;
 };
 
+export type GetTutorialPageQueryVariables = Exact<{
+  authorId: Scalars["String"];
+  tutorialId: Scalars["String"];
+}>;
+
+export type GetTutorialPageQuery = {
+  __typename?: "Query";
+  tutorial:
+    | {
+        __typename?: "Tutorial";
+        pages:
+          | Array<
+              | {
+                  __typename?: "Page";
+                  title: string | null | undefined;
+                  progress:
+                    | {
+                        __typename?: "Progress";
+                        currentPageNum: number | null | undefined;
+                        numPages: number | null | undefined;
+                      }
+                    | null
+                    | undefined;
+                  pageElements:
+                    | Array<
+                        | {
+                            __typename?: "Action";
+                            paragraph:
+                              | {
+                                  __typename?: "Paragraph";
+                                  chunks:
+                                    | Array<
+                                        | {
+                                            __typename?: "TextChunk";
+                                            text: string | null | undefined;
+                                            highlight:
+                                              | boolean
+                                              | null
+                                              | undefined;
+                                            bold: boolean | null | undefined;
+                                            hyperlinkUrl:
+                                              | string
+                                              | null
+                                              | undefined;
+                                            strikeout:
+                                              | boolean
+                                              | null
+                                              | undefined;
+                                            inlineCode:
+                                              | boolean
+                                              | null
+                                              | undefined;
+                                          }
+                                        | null
+                                        | undefined
+                                      >
+                                    | null
+                                    | undefined;
+                                }
+                              | null
+                              | undefined;
+                          }
+                        | {
+                            __typename?: "Command";
+                            command: string | null | undefined;
+                          }
+                        | {
+                            __typename?: "Foldable";
+                            shortDescription: string | null | undefined;
+                            elements:
+                              | Array<
+                                  | {
+                                      __typename?: "Action";
+                                      paragraph:
+                                        | {
+                                            __typename?: "Paragraph";
+                                            chunks:
+                                              | Array<
+                                                  | {
+                                                      __typename?: "TextChunk";
+                                                      text:
+                                                        | string
+                                                        | null
+                                                        | undefined;
+                                                      highlight:
+                                                        | boolean
+                                                        | null
+                                                        | undefined;
+                                                      bold:
+                                                        | boolean
+                                                        | null
+                                                        | undefined;
+                                                      hyperlinkUrl:
+                                                        | string
+                                                        | null
+                                                        | undefined;
+                                                      strikeout:
+                                                        | boolean
+                                                        | null
+                                                        | undefined;
+                                                      inlineCode:
+                                                        | boolean
+                                                        | null
+                                                        | undefined;
+                                                    }
+                                                  | null
+                                                  | undefined
+                                                >
+                                              | null
+                                              | undefined;
+                                          }
+                                        | null
+                                        | undefined;
+                                    }
+                                  | { __typename?: "Command" }
+                                  | {
+                                      __typename?: "Image";
+                                      url: string | null | undefined;
+                                      caption: string | null | undefined;
+                                    }
+                                  | {
+                                      __typename?: "ImageGroup";
+                                      images:
+                                        | Array<
+                                            | {
+                                                __typename?: "Image";
+                                                url: string | null | undefined;
+                                                caption:
+                                                  | string
+                                                  | null
+                                                  | undefined;
+                                              }
+                                            | null
+                                            | undefined
+                                          >
+                                        | null
+                                        | undefined;
+                                    }
+                                  | { __typename?: "Output" }
+                                  | {
+                                      __typename?: "Paragraph";
+                                      chunks:
+                                        | Array<
+                                            | {
+                                                __typename?: "TextChunk";
+                                                text: string | null | undefined;
+                                                highlight:
+                                                  | boolean
+                                                  | null
+                                                  | undefined;
+                                                bold:
+                                                  | boolean
+                                                  | null
+                                                  | undefined;
+                                                hyperlinkUrl:
+                                                  | string
+                                                  | null
+                                                  | undefined;
+                                                strikeout:
+                                                  | boolean
+                                                  | null
+                                                  | undefined;
+                                                inlineCode:
+                                                  | boolean
+                                                  | null
+                                                  | undefined;
+                                              }
+                                            | null
+                                            | undefined
+                                          >
+                                        | null
+                                        | undefined;
+                                    }
+                                  | {
+                                      __typename?: "Video";
+                                      platform:
+                                        | VideoPlatform
+                                        | null
+                                        | undefined;
+                                      url: string | null | undefined;
+                                      caption: string | null | undefined;
+                                    }
+                                  | null
+                                  | undefined
+                                >
+                              | null
+                              | undefined;
+                          }
+                        | {
+                            __typename?: "Image";
+                            url: string | null | undefined;
+                            caption: string | null | undefined;
+                          }
+                        | {
+                            __typename?: "ImageGroup";
+                            images:
+                              | Array<
+                                  | {
+                                      __typename?: "Image";
+                                      url: string | null | undefined;
+                                      caption: string | null | undefined;
+                                    }
+                                  | null
+                                  | undefined
+                                >
+                              | null
+                              | undefined;
+                          }
+                        | {
+                            __typename?: "Output";
+                            body: string | null | undefined;
+                          }
+                        | {
+                            __typename?: "Paragraph";
+                            chunks:
+                              | Array<
+                                  | {
+                                      __typename?: "TextChunk";
+                                      text: string | null | undefined;
+                                      highlight: boolean | null | undefined;
+                                      bold: boolean | null | undefined;
+                                      hyperlinkUrl: string | null | undefined;
+                                      strikeout: boolean | null | undefined;
+                                      inlineCode: boolean | null | undefined;
+                                    }
+                                  | null
+                                  | undefined
+                                >
+                              | null
+                              | undefined;
+                          }
+                        | {
+                            __typename?: "Video";
+                            platform: VideoPlatform | null | undefined;
+                            url: string | null | undefined;
+                            caption: string | null | undefined;
+                          }
+                        | null
+                        | undefined
+                      >
+                    | null
+                    | undefined;
+                }
+              | null
+              | undefined
+            >
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
+};
+
 export type ParagraphComponentFragment = {
   __typename?: "Paragraph";
   chunks:
@@ -763,6 +1016,68 @@ export const PageComponentFragmentDoc = gql`
   ${OutputComponentFragmentDoc}
   ${ImageComponentFragmentDoc}
 `;
+export const GetTutorialPageDocument = gql`
+  query GetTutorialPage($authorId: String!, $tutorialId: String!) {
+    tutorial(authorId: $authorId, tutorialId: $tutorialId) {
+      pages {
+        ...PageComponent
+      }
+    }
+  }
+  ${PageComponentFragmentDoc}
+`;
+
+/**
+ * __useGetTutorialPageQuery__
+ *
+ * To run a query within a React component, call `useGetTutorialPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTutorialPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTutorialPageQuery({
+ *   variables: {
+ *      authorId: // value for 'authorId'
+ *      tutorialId: // value for 'tutorialId'
+ *   },
+ * });
+ */
+export function useGetTutorialPageQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GetTutorialPageQuery,
+    GetTutorialPageQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetTutorialPageQuery, GetTutorialPageQueryVariables>(
+    GetTutorialPageDocument,
+    options
+  );
+}
+export function useGetTutorialPageLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetTutorialPageQuery,
+    GetTutorialPageQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetTutorialPageQuery,
+    GetTutorialPageQueryVariables
+  >(GetTutorialPageDocument, options);
+}
+export type GetTutorialPageQueryHookResult = ReturnType<
+  typeof useGetTutorialPageQuery
+>;
+export type GetTutorialPageLazyQueryHookResult = ReturnType<
+  typeof useGetTutorialPageLazyQuery
+>;
+export type GetTutorialPageQueryResult = Apollo.QueryResult<
+  GetTutorialPageQuery,
+  GetTutorialPageQueryVariables
+>;
 export const GetTutorialDocument = gql`
   query GetTutorial($authorId: String!, $tutorialId: String!) {
     tutorial(authorId: $authorId, tutorialId: $tutorialId) {
