@@ -7,7 +7,6 @@ import { ParagraphComponent } from "./ParagraphComponent";
 import { ImageGroupComponent } from "./ImageGroupComponent";
 import { FoldableComponent } from "./FoldableComponent";
 import { switchExhaustivenessCheck } from "./switchExhaustivenessCheck";
-import { PageTransitionComponent } from "./PageTransitionComponent";
 import { ProgressBar } from "./ProgressBar";
 import { ActionComponent } from "./ActionComponent";
 import { CommandComponent } from "./CommandComponent";
@@ -58,7 +57,6 @@ export const PageComponent = ({
             }
           }
         })}
-        <PageTransitionComponent fragment={fragment} />
       </div>
     );
   }
@@ -98,7 +96,6 @@ PageComponent.fragments = gql`
       }
     }
   }
-  ${PageTransitionComponent.fragments}
   ${VideoComponent.fragments}
   ${ParagraphComponent.fragments}
   ${ImageGroupComponent.fragments}
