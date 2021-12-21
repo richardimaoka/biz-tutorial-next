@@ -3,7 +3,7 @@ import { AppProps } from "next/app";
 import "../styles/global.css";
 
 const client = new ApolloClient({
-  uri: "file://schema.gql",
+  uri: "http://localhost:3000/api/graphql",
   cache: new InMemoryCache(),
 });
 

@@ -2,6 +2,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import path from "path";
 import fs from "fs";
 import { ParsedUrlQuery } from "querystring";
+import { TutorialComponent } from "../../components/TutorialComponent";
 
 interface StaticProps extends ParsedUrlQuery {
   authorId: string;
@@ -53,9 +54,8 @@ export const getStaticPaths: GetStaticPaths<StaticProps> = async () => {
   };
 };
 
-const Id = (params: any): JSX.Element => {
-  console.log("Id params", params);
-  return <div>Id</div>;
-};
+const Id = ({ authorId, tutorialId }: StaticProps): JSX.Element => (
+  <TutorialComponent authorId={authorId} tutorialId={tutorialId} />
+);
 
 export default Id;
