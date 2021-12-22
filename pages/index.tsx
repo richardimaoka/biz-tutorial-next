@@ -1,7 +1,6 @@
 import Head from "next/head";
 import Layout, { siteTitle } from "../components/layout";
 import utilStyles from "../styles/utils.module.css";
-import { getSortedPostsData } from "../lib/posts";
 
 interface PostData {
   id: string;
@@ -37,10 +36,9 @@ export default function Home({ allPostsData }: { allPostsData: PostData[] }) {
 }
 
 export async function getStaticProps() {
-  const allPostsData = getSortedPostsData();
   return {
     props: {
-      allPostsData,
+      allPostsData: [],
     },
   };
 }

@@ -90,10 +90,15 @@ const readTutorialJson = async (
 const resolvers: Resolvers = {
   Query: {
     tutorial: async (_, args, context) => {
-      const authorId = args.authorId;
-      const tutorialId = args.tutorialId;
-      const data = await readTutorialJson(authorId, tutorialId);
-      return data;
+      try {
+        const authorId = args.authorId;
+        const tutorialId = args.tutorialId;
+        const data = await readTutorialJson(authorId, tutorialId);
+        return data;
+      } catch (err) {
+        console.log(err);
+        throw new Error("internal error occurred");
+      }
     },
   },
 };

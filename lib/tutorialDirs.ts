@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-export const tutorialDataPath: string = path.resolve("public", "tutorial-data");
+const tutorialDataPath: string = path.resolve("public", "tutorial-data");
 
 const fileNamesInDir = async (dirName: string): Promise<string[]> => {
   return new Promise<string[]>((resolve, reject) => {
@@ -20,7 +20,9 @@ export const authorDirNames = async (): Promise<string[]> => {
     const dirNames = fileNamesInDir(tutorialDataPath);
     return dirNames;
   } catch (err) {
-    throw new Error(`authorDirNames() failed: ${err}`);
+    throw new Error(
+      `authorDirNames() failed to read dirs in '${tutorialDataPath}: ${err}`
+    );
   }
 };
 
@@ -33,7 +35,9 @@ export const tutorialDirNames = async (authorId: string): Promise<string[]> => {
     const dirNames = fileNamesInDir(authorDir);
     return dirNames;
   } catch (err) {
-    throw new Error(`tutorialDirNames(authorId = ${authorId}) failed: ${err}`);
+    throw new Error(
+      `tutorialDirNames(authorId = ${authorId}) failed to read dirs in '${authorDir}': ${err}`
+    );
   }
 };
 
