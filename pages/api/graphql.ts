@@ -2,6 +2,7 @@ import { ApolloServer, gql } from "apollo-server-micro";
 import fs from "fs";
 import path from "path";
 import { Tutorial } from "../../lib/generated/graphql";
+import { isPageJsonFile } from "../../lib/tutorialDirs";
 import { Page, Resolvers } from "./../../lib/generated/graphql";
 
 const typeDefs = gql`
@@ -21,11 +22,6 @@ const fileNamesInDir = async (dirName: string): Promise<string[]> => {
       } else return resolve(files);
     });
   });
-};
-
-const regExJson = /page\d*\.json/;
-const isPageJsonFile = (fileName: string): boolean => {
-  return regExJson.test(fileName);
 };
 
 const readJsonFile = async (

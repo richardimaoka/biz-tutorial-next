@@ -41,6 +41,11 @@ export const tutorialDirNames = async (authorId: string): Promise<string[]> => {
   }
 };
 
+const regExJson = /page\d*\.json/;
+export const isPageJsonFile = (fileName: string): boolean => {
+  return regExJson.test(fileName);
+};
+
 // const dir = authorDir(authorId)
 //   const fs.readdirSync
 //   return []
