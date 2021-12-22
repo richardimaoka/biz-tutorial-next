@@ -1,3 +1,4 @@
+import { listPageJsonFiles } from "./../../lib/tutorialDirs";
 import { ApolloServer, gql } from "apollo-server-micro";
 import fs from "fs";
 import path from "path";
@@ -10,22 +11,6 @@ const typeDefs = gql`
 
 const resolveTutorialDir = (authorId: string, tutorialId: string): string => {
   return path.resolve("./public", "tutorial-data", authorId, tutorialId);
-};
-
-const fileNamesInDir = async (dirName: string): Promise<string[]> => {
-  return new Promise<string[]>((resolve, reject) => {
-    fs.readdir(dirName, (err, files) => {
-      if (err) {
-        console.log(`fileNamesInDir error: no file found in ${dirName}`);
-        return reject(err);
-      } else return resolve(files);
-    });
-  });
-};
-
-const regExJson = /page\d*\.json/;
-const isPageJsonFile = (fileName: string): boolean => {
-  return regExJson.test(fileName);
 };
 
 const readJsonFile = async (
@@ -48,17 +33,18 @@ const readPageJsonFiles = async (
   authorId: string,
   tutorialId: string
 ): Promise<any[]> => {
-  const tutorialDir = resolveTutorialDir(authorId, tutorialId);
-  const fileNames = await fileNamesInDir(tutorialDir);
-  const jsonFiles = fileNames.filter(isPageJsonFile);
-
-  let pages = [];
-  for (const jsonFile of jsonFiles) {
-    const pageObj = await readJsonFile(tutorialDir, jsonFile);
-    pages.push(pageObj);
+  try {
+    const tutorialDir = resolveTutorialDir(authorId, tutorialId);
+    const jsonFiles = await listPageJsonFiles(authorId, tutorialId);
+    let pages = [];
+    for (const jsonFile of jsonFiles) {
+      const pageObj = await readJsonFile(tutorialDir, jsonFile);
+      pages.push(pageObj);
+    }
+    return pages;
+  } catch (err) {
+    throw err;
   }
-
-  return pages;
 };
 
 const readTutorialJsonFile = async (
