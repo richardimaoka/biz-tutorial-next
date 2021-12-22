@@ -3,36 +3,38 @@ import path from "path";
 
 export const tutorialDataPath: string = path.resolve("public", "tutorial-data");
 
-export const authorDirNames = async (): Promise<string[]> => {
+const fileNamesInDir = async (dirName: string): Promise<string[]> => {
   return new Promise<string[]>((resolve, reject) => {
-    fs.readdir(tutorialDataPath, (err, files) => {
+    fs.readdir(dirName, (err, files) => {
       if (err) {
-        return reject(
-          new Error(
-            `authorDirNames(): Failed to read directories in ${tutorialDataPath}`
-          )
-        );
-      } else return resolve(files);
+        return reject(err);
+      } else {
+        return resolve(files);
+      }
     });
   });
+};
+
+export const authorDirNames = async (): Promise<string[]> => {
+  try {
+    const dirNames = fileNamesInDir(tutorialDataPath);
+    return dirNames;
+  } catch (err) {
+    throw new Error(`authorDirNames() failed: ${err}`);
+  }
 };
 
 export const authorDirPath = (authorId: string): string =>
   path.resolve(tutorialDataPath, authorId);
 
 export const tutorialDirNames = async (authorId: string): Promise<string[]> => {
-  return new Promise<string[]>((resolve, reject) => {
-    const authorDir = authorDirPath(authorId);
-    fs.readdir(authorDir, (err, files) => {
-      if (err) {
-        return reject(
-          new Error(
-            `tutorialDirNames(authorId = ${authorId}): Failed to read directories in ${authorDir}`
-          )
-        );
-      } else return resolve(files);
-    });
-  });
+  const authorDir = authorDirPath(authorId);
+  try {
+    const dirNames = fileNamesInDir(authorDir);
+    return dirNames;
+  } catch (err) {
+    throw new Error(`tutorialDirNames(authorId = ${authorId}) failed: ${err}`);
+  }
 };
 
 // const dir = authorDir(authorId)
