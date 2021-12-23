@@ -1,4 +1,4 @@
-import { listPageJsonFiles } from "./../../lib/tutorialDirs";
+import { listPageJsonFiles, readJsonFile } from "./../../lib/tutorialDirs";
 import { ApolloServer, gql } from "apollo-server-micro";
 import fs from "fs";
 import path from "path";
@@ -9,36 +9,15 @@ const typeDefs = gql`
   ${fs.readFileSync(path.resolve("schema.gql"), "utf8")}
 `;
 
-const resolveTutorialDir = (authorId: string, tutorialId: string): string => {
-  return path.resolve("./public", "tutorial-data", authorId, tutorialId);
-};
-
-const readJsonFile = async (
-  dirName: string,
-  fileName: string
-): Promise<any> => {
-  const filepath = path.resolve(dirName, fileName);
-  try {
-    const fileContent = await fs.promises.readFile(filepath, "utf8");
-    const jsonData = JSON.parse(fileContent);
-    return jsonData;
-  } catch (err) {
-    console.log(`readJsonFile field to read the file ${filepath}`);
-    console.log(err);
-    throw err;
-  }
-};
-
 const readPageJsonFiles = async (
   authorId: string,
   tutorialId: string
 ): Promise<any[]> => {
   try {
-    const tutorialDir = resolveTutorialDir(authorId, tutorialId);
     const jsonFiles = await listPageJsonFiles(authorId, tutorialId);
     let pages = [];
     for (const jsonFile of jsonFiles) {
-      const pageObj = await readJsonFile(tutorialDir, jsonFile);
+      const pageObj = await readJsonFile(authorId, tutorialId, jsonFile);
       pages.push(pageObj);
     }
     return pages;
@@ -51,8 +30,7 @@ const readTutorialJsonFile = async (
   authorId: string,
   tutorialId: string
 ): Promise<any> => {
-  const tutorialDir = resolveTutorialDir(authorId, tutorialId);
-  const tutorialObj = await readJsonFile(tutorialDir, "tutorial.json");
+  const tutorialObj = await readJsonFile(authorId, tutorialId, "tutorial.json");
   return tutorialObj;
 };
 

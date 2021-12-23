@@ -3,27 +3,21 @@ import path from "path";
 
 const tutorialDataPath: string = path.resolve("public", "tutorial-data");
 
-export const authorDirPath = (authorId: string): string =>
+const authorDirPath = (authorId: string): string =>
   path.resolve(tutorialDataPath, authorId);
 
-export const tutorialDirPath = (authorId: string, tutorialId: string): string =>
+const tutorialDirPath = (authorId: string, tutorialId: string): string =>
   path.resolve(authorDirPath(authorId), tutorialId);
 
-const fileNamesInDir = async (dirName: string): Promise<string[]> => {
-  return new Promise<string[]>((resolve, reject) => {
-    fs.readdir(dirName, (err, files) => {
-      if (err) {
-        return reject(err);
-      } else {
-        return resolve(files);
-      }
-    });
-  });
-};
+const jsonFilePath = (
+  authorId: string,
+  tutorialId: string,
+  jsonFileName: string
+): string => path.resolve(authorDirPath(authorId), tutorialId, jsonFileName);
 
 export const authorDirNames = async (): Promise<string[]> => {
   try {
-    const dirNames = await fileNamesInDir(tutorialDataPath);
+    const dirNames = await fs.promises.readdir(tutorialDataPath);
     return dirNames;
   } catch (err) {
     throw new Error(
@@ -35,7 +29,7 @@ export const authorDirNames = async (): Promise<string[]> => {
 export const tutorialDirNames = async (authorId: string): Promise<string[]> => {
   const authorDir = authorDirPath(authorId);
   try {
-    const dirNames = await fileNamesInDir(authorDir);
+    const dirNames = await fs.promises.readdir(authorDir);
     return dirNames;
   } catch (err) {
     throw new Error(
@@ -55,7 +49,7 @@ export const listPageJsonFiles = async (
 ): Promise<string[]> => {
   const tutorialDir = tutorialDirPath(authorId, tutorialId);
   try {
-    const dirNames = await fileNamesInDir(tutorialDir);
+    const dirNames = await fs.promises.readdir(tutorialDir);
     const jsonFiles = dirNames.filter(isPageJsonFile);
     if (jsonFiles.length > 0) {
       return dirNames;
@@ -69,20 +63,19 @@ export const listPageJsonFiles = async (
   }
 };
 
-// const dir = authorDir(authorId)
-//   const fs.readdirSync
-//   return []
-// }
-
-//   for (const authorDirName of authorDirs) {
-//     const tutorialDirNames = fs.readdirSync(
-//       path.resolve("public", "tutorial-data", authorDirName)
-//     );
-
-//     //collect all dirs and files into pathParams
-//     for (const tutorialDirName of tutorialDirNames) {
-//       pathParams.push({
-//         params: { authorId: authorDirName, tutorialId: tutorialDirName },
-//       });
-//     }
-//   }
+export const readJsonFile = async <R = any>(
+  authorId: string,
+  tutorialId: string,
+  jsonFileName: string
+): Promise<R> => {
+  const filePath = jsonFilePath(authorId, tutorialId, jsonFileName);
+  try {
+    const dataString = await fs.promises.readFile(filePath, "utf-8");
+    const jsObject = JSON.parse(dataString);
+    return jsObject;
+  } catch (err) {
+    throw new Error(
+      `readPageJson(authorId = ${authorId}, tutorialId = ${tutorialId}, jsonFileName = ${jsonFileName}) failed to read '${filePath}': ${err}`
+    );
+  }
+};
