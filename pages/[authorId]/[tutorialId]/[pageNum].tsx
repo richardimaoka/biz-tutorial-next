@@ -1,10 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from "next";
-import path from "path";
 import { ParsedUrlQuery } from "querystring";
-import fs from "fs";
 import {
   authorDirNames,
-  listPageJsonFiles,
   listPageNumbers,
   tutorialDirNames,
 } from "../../../lib/tutorialDirs";

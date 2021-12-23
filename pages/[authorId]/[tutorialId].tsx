@@ -1,6 +1,4 @@
 import { GetStaticPaths, GetStaticProps } from "next";
-import path from "path";
-import fs from "fs";
 import { ParsedUrlQuery } from "querystring";
 import { TutorialComponent } from "../../components/TutorialComponent";
 import { authorDirNames, tutorialDirNames } from "../../lib/tutorialDirs";
