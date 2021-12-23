@@ -18,14 +18,14 @@ gql`
 export interface PageQueryComponentProps {
   authorId: string;
   tutorialId: string;
-  pageId: number;
+  pageNum: number;
 }
 
 export const PageQueryComponent = ({
   authorId,
   tutorialId,
-  pageId,
-}: PageQueryComponentProps) => {
+  pageNum,
+}: PageQueryComponentProps): JSX.Element => {
   const { loading, error, data } = useGetTutorialPageQuery({
     variables: {
       authorId,
@@ -43,7 +43,7 @@ export const PageQueryComponent = ({
       <div>{`GraphQL Error! returned data.tutorial is undefined or null`}</div>
     );
   } else if (data && data.tutorial && data.tutorial.pages) {
-    const aa = data.tutorial.pages[pageId];
+    const aa = data.tutorial.pages[0];
     if (aa) {
       return (
         <>
@@ -53,5 +53,7 @@ export const PageQueryComponent = ({
     } else {
       return <></>;
     }
+  } else {
+    return <></>;
   }
 };

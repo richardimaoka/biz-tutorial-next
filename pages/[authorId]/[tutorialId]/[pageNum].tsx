@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
+import { PageQueryComponent } from "../../../components/PageQueryComponent";
 import {
   authorDirNames,
   listPageNumbers,
@@ -54,6 +55,7 @@ export const getStaticPaths: GetStaticPaths<StaticProps> = async () => {
       }
     }
 
+    console.log(pathParams);
     return {
       paths: pathParams,
       fallback: false,
@@ -64,6 +66,12 @@ export const getStaticPaths: GetStaticPaths<StaticProps> = async () => {
   }
 };
 
-const PageNum = ({}): JSX.Element => <div>aaaa</div>;
+const PageNum = (params: StaticProps): JSX.Element => (
+  <PageQueryComponent
+    authorId={params.authorId}
+    tutorialId={params.tutorialId}
+    pageNum={0}
+  ></PageQueryComponent>
+);
 
 export default PageNum;
