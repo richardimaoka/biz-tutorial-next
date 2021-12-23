@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs";
 import { ParsedUrlQuery } from "querystring";
 import { TutorialComponent } from "../../components/TutorialComponent";
+import { authorDirNames, tutorialDirNames } from "../../lib/tutorialDirs";
 
 interface StaticProps extends ParsedUrlQuery {
   authorId: string;
@@ -18,7 +19,7 @@ export const getStaticProps: GetStaticProps<StaticProps, StaticProps> = async ({
       props: { ...params },
     };
   } else {
-    throw new Error(`error in getStaticProps(): ${params}`);
+    throw new Error(`Error in getStaticProps(): ${params}`);
   }
 };
 
@@ -34,24 +35,27 @@ export const getStaticPaths: GetStaticPaths<StaticProps> = async () => {
   //    { params: { authorId: "richardimaoka", tutorialId: fileName } }
   // ]
 
-  const authorDirs = fs.readdirSync(path.resolve("public", "tutorial-data"));
-  for (const authorDirName of authorDirs) {
-    const tutorialDirNames = fs.readdirSync(
-      path.resolve("public", "tutorial-data", authorDirName)
-    );
+  try {
+    const authorDirs = await authorDirNames();
+    for (const authorId of authorDirs) {
+      const tutorialDirs = await tutorialDirNames(authorId);
 
-    //collect all dirs and files into pathParams
-    for (const tutorialDirName of tutorialDirNames) {
-      pathParams.push({
-        params: { authorId: authorDirName, tutorialId: tutorialDirName },
-      });
+      //collect all dirs and files into pathParams
+      for (const tutorialId of tutorialDirs) {
+        pathParams.push({
+          params: { authorId, tutorialId },
+        });
+      }
     }
-  }
 
-  return {
-    paths: pathParams,
-    fallback: false,
-  };
+    return {
+      paths: pathParams,
+      fallback: false,
+    };
+  } catch (err) {
+    console.log("Error in getStaticPaths: ", err);
+    throw err;
+  }
 };
 
 const Id = ({ authorId, tutorialId }: StaticProps): JSX.Element => (

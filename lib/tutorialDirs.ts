@@ -38,7 +38,10 @@ export const tutorialDirNames = async (authorId: string): Promise<string[]> => {
   }
 };
 
-const regExJson = /page\d*\.json/;
+const regExJson = /page(\d)*\.json/;
+const extractPageNumber = (pageJsonFileName: string): string =>
+  pageJsonFileName.replace(regExJson, "$`");
+
 const isPageJsonFile = (fileName: string): boolean => {
   return regExJson.test(fileName);
 };
@@ -58,7 +61,22 @@ export const listPageJsonFiles = async (
     }
   } catch (err) {
     throw new Error(
-      `tutorialDirNames(authorId = ${authorId}) failed to read dirs in '${tutorialDir}': ${err}`
+      `listPageJsonFiles(authorId = ${authorId}, tutorialId = ${tutorialId}) failed to read dirs in '${tutorialDir}': ${err}`
+    );
+  }
+};
+
+export const listPageNumbers = async (
+  authorId: string,
+  tutorialId: string
+): Promise<string[]> => {
+  try {
+    const jsonFiles = listPageJsonFiles(authorId, tutorialId);
+    const pageNums = jsonFiles.map(extractPageNumber);
+    return pageNums;
+  } catch (err) {
+    throw new Error(
+      `listPageNumbers(authorId = ${authorId}, tutorialId = ${tutorialId}) failed to in : ${err}`
     );
   }
 };

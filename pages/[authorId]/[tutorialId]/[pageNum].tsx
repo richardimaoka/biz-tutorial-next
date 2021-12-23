@@ -2,6 +2,12 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import path from "path";
 import { ParsedUrlQuery } from "querystring";
 import fs from "fs";
+import {
+  authorDirNames,
+  listPageJsonFiles,
+  listPageNumbers,
+  tutorialDirNames,
+} from "../../../lib/tutorialDirs";
 
 interface StaticProps extends ParsedUrlQuery {
   authorId: string;
@@ -29,33 +35,36 @@ interface StaticPathParams {
 export const getStaticPaths: GetStaticPaths<StaticProps> = async () => {
   let pathParams: StaticPathParams[] = [];
   // `pathParams` will be = [
-  //    { params: { authorId: "richardimaoka", tutorialId: fileName } },
-  //    { params: { authorId: "richardimaoka", tutorialId: fileName } },
-  //    { params: { authorId: "richardimaoka", tutorialId: fileName } }
+  //    { params: { authorId: "richardimaoka", tutorialId: fileName , pageNum : "1"} },
+  //    { params: { authorId: "richardimaoka", tutorialId: fileName , pageNum : "2"} },
+  //    { params: { authorId: "richardimaoka", tutorialId: fileName , pageNum : "3"} }
   // ]
 
-  const authorDirs = fs.readdirSync(path.resolve("public", "tutorial-data"));
-  for (const authorDirName of authorDirs) {
-    const tutorialDirNames = fs.readdirSync(
-      path.resolve("public", "tutorial-data", authorDirName)
-    );
-
+  try {
     //collect all dirs and files into pathParams
-    for (const tutorialDirName of tutorialDirNames) {
-      pathParams.push({
-        params: {
-          authorId: authorDirName,
-          tutorialId: tutorialDirName,
-          pageNum: "1",
-        },
-      });
-    }
-  }
+    const authorDirs = await authorDirNames();
+    for (const authorId of authorDirs) {
+      const tutorialDirs = await tutorialDirNames(authorId);
 
-  return {
-    paths: pathParams,
-    fallback: false,
-  };
+      for (const tutorialId of tutorialDirs) {
+        const pageNumberStrings = await listPageNumbers(authorId, tutorialId);
+
+        for (const pageNum of pageNumberStrings) {
+          pathParams.push({
+            params: { authorId, tutorialId, pageNum },
+          });
+        }
+      }
+    }
+
+    return {
+      paths: pathParams,
+      fallback: false,
+    };
+  } catch (err) {
+    console.log("Error in getStaticPaths: ", err);
+    throw err;
+  }
 };
 
 const PageNum = ({}): JSX.Element => <div>aaaa</div>;
