@@ -18,7 +18,7 @@ gql`
 export interface PageQueryComponentProps {
   authorId: string;
   tutorialId: string;
-  pageNum: number;
+  pageNum: string;
 }
 
 export const PageQueryComponent = ({
@@ -43,11 +43,11 @@ export const PageQueryComponent = ({
       <div>{`GraphQL Error! returned data.tutorial is undefined or null`}</div>
     );
   } else if (data && data.tutorial && data.tutorial.pages) {
-    const aa = data.tutorial.pages[0];
-    if (aa) {
+    const page = data.tutorial.pages.find((x) => x && x.pageNum === pageNum);
+    if (page) {
       return (
         <>
-          <PageComponent fragment={aa} />
+          <PageComponent fragment={page} />
         </>
       );
     } else {

@@ -16,7 +16,7 @@ interface StaticProps extends ParsedUrlQuery {
 export const getStaticProps: GetStaticProps<StaticProps, StaticProps> = async ({
   params,
 }) => {
-  console.log("params", params);
+  // console.log("[pageNum] params", params);
   if (params) {
     return {
       props: { ...params },
@@ -55,23 +55,27 @@ export const getStaticPaths: GetStaticPaths<StaticProps> = async () => {
       }
     }
 
-    console.log(pathParams);
+    // console.log("[pageNum]", pathParams);
     return {
       paths: pathParams,
       fallback: false,
     };
   } catch (err) {
-    console.log("Error in getStaticPaths: ", err);
+    // console.log("[pageNum] Error in getStaticPaths: ", err);
     throw err;
   }
 };
 
-const PageNum = (params: StaticProps): JSX.Element => (
+const PageNum = ({
+  authorId,
+  tutorialId,
+  pageNum,
+}: StaticProps): JSX.Element => (
   <PageQueryComponent
-    authorId={params.authorId}
-    tutorialId={params.tutorialId}
-    pageNum={0}
-  ></PageQueryComponent>
+    authorId={authorId}
+    tutorialId={tutorialId}
+    pageNum={pageNum}
+  />
 );
 
 export default PageNum;

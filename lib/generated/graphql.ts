@@ -375,6 +375,7 @@ export type OutputComponentFragment = {
 export type PageComponentFragment = {
   __typename?: "Page";
   title: string | null | undefined;
+  pageNum: string | null | undefined;
   progress:
     | {
         __typename?: "Progress";
@@ -562,6 +563,7 @@ export type GetTutorialPageQuery = {
               | {
                   __typename?: "Page";
                   title: string | null | undefined;
+                  pageNum: string | null | undefined;
                   progress:
                     | {
                         __typename?: "Progress";
@@ -976,6 +978,7 @@ export const OutputComponentFragmentDoc = gql`
 export const PageComponentFragmentDoc = gql`
   fragment PageComponent on Page {
     title
+    pageNum
     progress {
       ...ProgressBar
     }

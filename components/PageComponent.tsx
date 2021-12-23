@@ -65,6 +65,7 @@ export const PageComponent = ({
 PageComponent.fragments = gql`
   fragment PageComponent on Page {
     title
+    pageNum
     progress {
       ...ProgressBar
     }
