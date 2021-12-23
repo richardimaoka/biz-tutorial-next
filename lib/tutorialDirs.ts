@@ -40,7 +40,7 @@ export const tutorialDirNames = async (authorId: string): Promise<string[]> => {
 
 const regExJson = /page(\d)*\.json/;
 const extractPageNumber = (pageJsonFileName: string): string =>
-  pageJsonFileName.replace(regExJson, "$`");
+  pageJsonFileName.replace(regExJson, "$1");
 
 const isPageJsonFile = (fileName: string): boolean => {
   return regExJson.test(fileName);
@@ -52,10 +52,10 @@ export const listPageJsonFiles = async (
 ): Promise<string[]> => {
   const tutorialDir = tutorialDirPath(authorId, tutorialId);
   try {
-    const dirNames = await fs.promises.readdir(tutorialDir);
-    const jsonFiles = dirNames.filter(isPageJsonFile);
+    const fileNames = await fs.promises.readdir(tutorialDir);
+    const jsonFiles = fileNames.filter(isPageJsonFile);
     if (jsonFiles.length > 0) {
-      return dirNames;
+      return jsonFiles;
     } else {
       throw new Error("no json file found");
     }
@@ -71,7 +71,7 @@ export const listPageNumbers = async (
   tutorialId: string
 ): Promise<string[]> => {
   try {
-    const jsonFiles = listPageJsonFiles(authorId, tutorialId);
+    const jsonFiles = await listPageJsonFiles(authorId, tutorialId);
     const pageNums = jsonFiles.map(extractPageNumber);
     return pageNums;
   } catch (err) {
