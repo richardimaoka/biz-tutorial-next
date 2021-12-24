@@ -31,10 +31,10 @@ export const ImageGroupComponent = ({
 };
 
 ImageGroupComponent.fragments = gql`
-fragment ImageGroupComponent on ImageGroup {
-  images {
-    ...ImageComponent
+  fragment ImageGroupComponent on ImageGroup {
+    images {
+      ...ImageComponent
+    }
   }
   ${ImageComponent.fragments}
-}
 `;

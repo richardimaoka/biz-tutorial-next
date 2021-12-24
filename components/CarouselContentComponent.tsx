@@ -32,8 +32,7 @@ CarouselContent.fragments = gql`
   fragment CarouselContent on ImageGroup {
     images {
       ...CarouselItem
-
     }
-    ${CarouselItem.fragments}
   }
+  ${CarouselItem.fragments}
 `;
