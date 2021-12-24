@@ -558,6 +558,7 @@ export type GetTutorialPageQuery = {
   tutorial:
     | {
         __typename?: "Tutorial";
+        title: string | null | undefined;
         pages:
           | Array<
               | {
@@ -1022,11 +1023,13 @@ export const PageComponentFragmentDoc = gql`
 export const GetTutorialPageDocument = gql`
   query GetTutorialPage($authorId: String!, $tutorialId: String!) {
     tutorial(authorId: $authorId, tutorialId: $tutorialId) {
+      ...HeaderContainer
       pages {
         ...PageComponent
       }
     }
   }
+  ${HeaderContainerFragmentDoc}
   ${PageComponentFragmentDoc}
 `;
 

@@ -1,16 +1,19 @@
 /** @jsxImportSource @emotion/react */
 import { gql } from "@apollo/client";
 import { useGetTutorialPageQuery } from "../lib/generated/graphql";
+import { HeaderContainer } from "./HeaderContainer";
 import { PageComponent } from "./PageComponent";
 
 // This is read by GraphQL codegen to generate types
 gql`
   query GetTutorialPage($authorId: String!, $tutorialId: String!) {
     tutorial(authorId: $authorId, tutorialId: $tutorialId) {
+      ...HeaderContainer
       pages {
         ...PageComponent
       }
     }
+    ${HeaderContainer.fragments}
     ${PageComponent.fragments}
   }
 `;
@@ -47,6 +50,7 @@ export const PageQueryComponent = ({
     if (page) {
       return (
         <>
+          <HeaderContainer fragment={data.tutorial} />
           <PageComponent fragment={page} />
         </>
       );
