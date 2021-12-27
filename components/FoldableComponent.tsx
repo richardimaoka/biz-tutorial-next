@@ -2,7 +2,7 @@
 import { css } from "@emotion/react";
 import { gql } from "@apollo/client";
 import { VideoComponent } from "./VideoComponent";
-import { ParagraphComponent } from "./ParagraphComponent";
+import { ParagraphComponent } from "./paragraph/ParagraphComponent";
 import { ImageGroupComponent } from "./ImageGroupComponent";
 import { FoldableComponentFragment } from "../lib/generated/graphql";
 import React, { useState } from "react";
