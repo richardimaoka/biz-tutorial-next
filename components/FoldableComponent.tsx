@@ -9,7 +9,7 @@ import React, { useState } from "react";
 import { FoldedIcon } from "./FoldedIcon";
 import { UnfoldedIcon } from "./UnFoldedIcon";
 import { switchExhaustivenessCheck } from "./switchExhaustivenessCheck";
-import { ActionComponent } from "./ActionComponent";
+import { ActionComponent } from "./action/ActionComponent";
 import { ImageComponent } from "./ImageComponent";
 
 export interface FoldableComponentProps {

@@ -2,7 +2,7 @@
 import { gql } from "@apollo/client";
 import { css } from "@emotion/react";
 import { PageComponentFragment } from "../lib/generated/graphql";
-import { ActionComponent } from "./ActionComponent";
+import { ActionComponent } from "./action/ActionComponent";
 import { CommandComponent } from "./CommandComponent";
 import { FoldableComponent } from "./FoldableComponent";
 import { ImageComponent } from "./ImageComponent";

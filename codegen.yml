@@ -1,6 +1,6 @@
 overwrite: true
 schema: "schema.gql"
-documents: "components/**.tsx"
+documents: "components/**/*.tsx"
 generates:
   lib/generated/graphql.ts:
     plugins:

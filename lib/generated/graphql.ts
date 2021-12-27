@@ -191,32 +191,6 @@ export enum VideoPlatform {
   Youtube = "YOUTUBE",
 }
 
-export type ActionComponentFragment = {
-  __typename?: "Action";
-  paragraph:
-    | {
-        __typename?: "Paragraph";
-        chunks:
-          | Array<
-              | {
-                  __typename?: "TextChunk";
-                  text: string | null | undefined;
-                  highlight: boolean | null | undefined;
-                  bold: boolean | null | undefined;
-                  hyperlinkUrl: string | null | undefined;
-                  strikeout: boolean | null | undefined;
-                  inlineCode: boolean | null | undefined;
-                }
-              | null
-              | undefined
-            >
-          | null
-          | undefined;
-      }
-    | null
-    | undefined;
-};
-
 export type CarouselComponentFragment = {
   __typename?: "ImageGroup";
   images:
@@ -854,6 +828,32 @@ export type VideoComponentFragment = {
   platform: VideoPlatform | null | undefined;
   url: string | null | undefined;
   caption: string | null | undefined;
+};
+
+export type ActionComponentFragment = {
+  __typename?: "Action";
+  paragraph:
+    | {
+        __typename?: "Paragraph";
+        chunks:
+          | Array<
+              | {
+                  __typename?: "TextChunk";
+                  text: string | null | undefined;
+                  highlight: boolean | null | undefined;
+                  bold: boolean | null | undefined;
+                  hyperlinkUrl: string | null | undefined;
+                  strikeout: boolean | null | undefined;
+                  inlineCode: boolean | null | undefined;
+                }
+              | null
+              | undefined
+            >
+          | null
+          | undefined;
+      }
+    | null
+    | undefined;
 };
 
 export const CarouselImageFragmentDoc = gql`
