@@ -37,7 +37,7 @@ export const VideoComponent = ({
   }
 };
 
-VideoComponent.fragments = gql`
+VideoComponent.fragment = gql`
   fragment VideoComponent on Video {
     platform
     url

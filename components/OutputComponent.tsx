@@ -25,7 +25,7 @@ export const OutputComponent = ({
   );
 };
 
-OutputComponent.fragments = gql`
+OutputComponent.fragment = gql`
   fragment OutputComponent on Output {
     body
   }

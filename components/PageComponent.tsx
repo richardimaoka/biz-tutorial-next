@@ -87,7 +87,7 @@ export const PageComponent = ({
   }
 };
 
-PageComponent.fragments = gql`
+PageComponent.fragment = gql`
   fragment PageComponent on Page {
     title
     pageNum
@@ -121,12 +121,12 @@ PageComponent.fragments = gql`
       }
     }
   }
-  ${VideoComponent.fragments}
-  ${ParagraphComponent.fragments}
-  ${ImageGroupComponent.fragments}
-  ${FoldableComponent.fragments}
-  ${ActionComponent.fragments}
-  ${CommandComponent.fragments}
-  ${OutputComponent.fragments}
-  ${ImageComponent.fragments}
+  ${VideoComponent.fragment}
+  ${ParagraphComponent.fragment}
+  ${ImageGroupComponent.fragment}
+  ${FoldableComponent.fragment}
+  ${ActionComponent.fragment}
+  ${CommandComponent.fragment}
+  ${OutputComponent.fragment}
+  ${ImageComponent.fragment}
 `;

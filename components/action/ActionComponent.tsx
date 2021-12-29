@@ -34,12 +34,12 @@ export const ActionComponent = ({ fragment }: ActionProps): JSX.Element => {
   }
 };
 
-ActionComponent.fragments = gql`
+ActionComponent.fragment = gql`
   fragment ActionComponent on Action {
     paragraph {
       ...ParagraphComponent
     }
   }
 
-  ${ParagraphComponent.fragments}
+  ${ParagraphComponent.fragment}
 `;

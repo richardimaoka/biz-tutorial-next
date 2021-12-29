@@ -26,9 +26,9 @@ export const CarouselComponent = ({
   );
 };
 
-CarouselComponent.fragments = gql`
+CarouselComponent.fragment = gql`
   fragment CarouselComponent on ImageGroup {
     ...CarouselContent
   }
-  ${CarouselContent.fragments}
+  ${CarouselContent.fragment}
 `;

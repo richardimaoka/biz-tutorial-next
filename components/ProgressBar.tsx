@@ -45,7 +45,7 @@ export const ProgressBar = ({ fragment }: ProgressBarProps): JSX.Element => {
   }
 };
 
-ProgressBar.fragments = gql`
+ProgressBar.fragment = gql`
   fragment ProgressBar on Progress {
     currentPageNum
     numPages

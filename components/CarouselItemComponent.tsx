@@ -30,9 +30,9 @@ export const CarouselItem = ({ fragment }: CarouselItemProps): JSX.Element => (
   </div>
 );
 
-CarouselItem.fragments = gql`
+CarouselItem.fragment = gql`
   fragment CarouselItem on Image {
     ...CarouselImage
   }
-  ${CarouselImage.fragments}
+  ${CarouselImage.fragment}
 `;

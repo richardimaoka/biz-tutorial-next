@@ -105,7 +105,7 @@ export const FoldableComponent = ({
   );
 };
 
-FoldableComponent.fragments = gql`
+FoldableComponent.fragment = gql`
   fragment FoldableComponent on Foldable {
     shortDescription
     elements {
@@ -127,9 +127,9 @@ FoldableComponent.fragments = gql`
     }
   }
 
-  ${VideoComponent.fragments}
-  ${ParagraphComponent.fragments}
-  ${ImageGroupComponent.fragments}
-  ${ActionComponent.fragments}
-  ${ImageComponent.fragments}
+  ${VideoComponent.fragment}
+  ${ParagraphComponent.fragment}
+  ${ImageGroupComponent.fragment}
+  ${ActionComponent.fragment}
+  ${ImageComponent.fragment}
 `;

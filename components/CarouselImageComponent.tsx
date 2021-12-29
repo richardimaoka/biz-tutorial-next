@@ -9,7 +9,7 @@ interface CarouselImageProps {
 export const CarouselImage = ({ fragment }: CarouselImageProps): JSX.Element =>
   fragment.url ? <img src={fragment.url} alt="" /> : <></>;
 
-CarouselImage.fragments = gql`
+CarouselImage.fragment = gql`
   fragment CarouselImage on Image {
     url
   }

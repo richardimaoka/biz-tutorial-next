@@ -28,7 +28,7 @@ export const ImageComponent = ({
   );
 };
 
-ImageComponent.fragments = gql`
+ImageComponent.fragment = gql`
   fragment ImageComponent on Image {
     url
     caption

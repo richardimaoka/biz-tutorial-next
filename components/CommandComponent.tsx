@@ -25,7 +25,7 @@ export const CommandComponent = ({
   );
 };
 
-CommandComponent.fragments = gql`
+CommandComponent.fragment = gql`
   fragment CommandComponent on Command {
     command
   }

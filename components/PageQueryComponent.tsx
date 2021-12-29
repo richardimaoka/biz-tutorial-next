@@ -13,8 +13,8 @@ gql`
         ...PageComponent
       }
     }
-    ${HeaderContainer.fragments}
-    ${PageComponent.fragments}
+    ${HeaderContainer.fragment}
+    ${PageComponent.fragment}
   }
 `;
 
