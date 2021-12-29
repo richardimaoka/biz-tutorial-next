@@ -191,40 +191,6 @@ export enum VideoPlatform {
   Youtube = "YOUTUBE",
 }
 
-export type CarouselComponentFragment = {
-  __typename?: "ImageGroup";
-  images:
-    | Array<
-        | { __typename?: "Image"; url: string | null | undefined }
-        | null
-        | undefined
-      >
-    | null
-    | undefined;
-};
-
-export type CarouselContentFragment = {
-  __typename?: "ImageGroup";
-  images:
-    | Array<
-        | { __typename?: "Image"; url: string | null | undefined }
-        | null
-        | undefined
-      >
-    | null
-    | undefined;
-};
-
-export type CarouselImageFragment = {
-  __typename?: "Image";
-  url: string | null | undefined;
-};
-
-export type CarouselItemFragment = {
-  __typename?: "Image";
-  url: string | null | undefined;
-};
-
 export type CommandComponentFragment = {
   __typename?: "Command";
   command: string | null | undefined;
@@ -856,31 +822,6 @@ export type TextChunkComponentFragment = {
   inlineCode: boolean | null | undefined;
 };
 
-export const CarouselImageFragmentDoc = gql`
-  fragment CarouselImage on Image {
-    url
-  }
-`;
-export const CarouselItemFragmentDoc = gql`
-  fragment CarouselItem on Image {
-    ...CarouselImage
-  }
-  ${CarouselImageFragmentDoc}
-`;
-export const CarouselContentFragmentDoc = gql`
-  fragment CarouselContent on ImageGroup {
-    images {
-      ...CarouselItem
-    }
-  }
-  ${CarouselItemFragmentDoc}
-`;
-export const CarouselComponentFragmentDoc = gql`
-  fragment CarouselComponent on ImageGroup {
-    ...CarouselContent
-  }
-  ${CarouselContentFragmentDoc}
-`;
 export const HeaderContainerFragmentDoc = gql`
   fragment HeaderContainer on Tutorial {
     title
