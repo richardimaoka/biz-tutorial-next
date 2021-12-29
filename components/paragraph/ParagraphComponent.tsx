@@ -1,46 +1,51 @@
 /** @jsxImportSource @emotion/react */
-import { gql } from '@apollo/client'
-import { css } from '@emotion/react'
-import { ParagraphComponentFragment } from '../../lib/generated/graphql'
-import { isEmptyTextChunk, TextChunkComponent } from './TextChunkComponent'
+import { gql } from "@apollo/client";
+import { css } from "@emotion/react";
+import { ParagraphComponentFragment } from "../../lib/generated/graphql";
+import { isEmptyTextChunk, TextChunkComponent } from "./TextChunkComponent";
 
 interface ParagraphProps {
-  fragment: ParagraphComponentFragment
+  fragment: ParagraphComponentFragment;
 }
 
 export const createParagraph = (text: string): ParagraphComponentFragment => {
   return {
-    __typename: 'Paragraph',
+    __typename: "Paragraph",
     chunks: [
       {
-        __typename: 'TextChunk',
+        __typename: "TextChunk",
         text: text,
+        highlight: null,
+        bold: null,
+        hyperlinkUrl: null,
+        strikeout: null,
+        inlineCode: null,
       },
     ],
-  }
-}
+  };
+};
 
 export const isEmptyParagraph = (
   fragment: ParagraphComponentFragment
 ): boolean => {
   if (!fragment.chunks) {
-    return false
+    return false;
   } else {
     const isAnyChunkContentful = fragment.chunks
       .map(isEmptyTextChunk)
-      .includes(false) //see if any `isEmptyTextChunk == false`
+      .includes(false); //see if any `isEmptyTextChunk == false`
 
-    const isEveryChunkEmpty = !isAnyChunkContentful
+    const isEveryChunkEmpty = !isAnyChunkContentful;
 
-    return isEveryChunkEmpty
+    return isEveryChunkEmpty;
   }
-}
+};
 
 export const ParagraphComponent = ({
   fragment,
 }: ParagraphProps): JSX.Element => {
   if (!fragment.chunks || isEmptyParagraph(fragment)) {
-    return <></>
+    return <></>;
   } else {
     return (
       <p
@@ -54,9 +59,9 @@ export const ParagraphComponent = ({
           chunk ? <TextChunkComponent key={index} fragment={chunk} /> : <></>
         )}
       </p>
-    )
+    );
   }
-}
+};
 
 ParagraphComponent.fragment = gql`
   fragment ParagraphComponent on Paragraph {
@@ -66,4 +71,4 @@ ParagraphComponent.fragment = gql`
   }
 
   ${TextChunkComponent.fragment}
-`
+`;
