@@ -1,6 +1,5 @@
 import { GraphQLResolveInfo } from "graphql";
 import { gql } from "@apollo/client";
-import * as Apollo from "@apollo/client";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -13,10 +12,6 @@ export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]: Maybe<T[SubKey]>;
 };
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-export type RequireFields<T, K extends keyof T> = {
-  [X in Exclude<keyof T, K>]?: T[X];
-} & { [P in K]-?: NonNullable<T[P]> };
-const defaultOptions = {};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -28,7 +23,9 @@ export type Scalars = {
 
 export type Action = {
   __typename?: "Action";
-  paragraph: Maybe<Paragraph>;
+  details: Maybe<Array<Maybe<PlainElement>>>;
+  instruction: Maybe<Paragraph>;
+  results: Maybe<Array<Maybe<PlainElement>>>;
 };
 
 export type Author = {
@@ -36,15 +33,19 @@ export type Author = {
   id: Maybe<Scalars["ID"]>;
 };
 
-export type Command = {
-  __typename?: "Command";
-  command: Maybe<Scalars["String"]>;
+export type CarouselImage = {
+  __typename?: "CarouselImage";
+  images: Maybe<Array<Maybe<Image>>>;
 };
 
-export type CommandAndOutput = {
-  __typename?: "CommandAndOutput";
-  command: Maybe<Scalars["String"]>;
-  output: Maybe<Scalars["String"]>;
+export type Command = {
+  __typename?: "Command";
+  text: Maybe<Scalars["String"]>;
+};
+
+export type CommandOutput = {
+  __typename?: "CommandOutput";
+  text: Maybe<Scalars["String"]>;
 };
 
 export type DecorateTextChunksInput = {
@@ -57,6 +58,34 @@ export type DirectoryStructure = {
   contents: Maybe<Array<Maybe<Scalars["String"]>>>;
 };
 
+export type File = {
+  __typename?: "File";
+  content: Maybe<Scalars["String"]>;
+  fileName: Maybe<Scalars["String"]>;
+};
+
+export type FileMultiple = {
+  __typename?: "FileMultiple";
+  files: Maybe<Array<Maybe<File>>>;
+};
+
+export type FileTree = {
+  __typename?: "FileTree";
+  treeNodes: Maybe<Array<Maybe<FileTreeNode>>>;
+};
+
+export type FileTreeNode = {
+  __typename?: "FileTreeNode";
+  depth: Maybe<Scalars["Int"]>;
+  name: Maybe<Scalars["String"]>;
+  nodeType: Maybe<FileTreeNodeType>;
+};
+
+export enum FileTreeNodeType {
+  Directorynode = "DIRECTORYNODE",
+  Filenode = "FILENODE",
+}
+
 export type Foldable = {
   __typename?: "Foldable";
   elements: Maybe<Array<Maybe<PlainElement>>>;
@@ -65,22 +94,15 @@ export type Foldable = {
 
 export type Image = {
   __typename?: "Image";
+  alt: Maybe<Scalars["String"]>;
   caption: Maybe<Scalars["String"]>;
+  height: Maybe<Scalars["Int"]>;
   url: Maybe<Scalars["String"]>;
-};
-
-export type ImageGroup = {
-  __typename?: "ImageGroup";
-  images: Maybe<Array<Maybe<Image>>>;
+  width: Maybe<Scalars["Int"]>;
 };
 
 export type Note = {
   __typename?: "Note";
-  body: Maybe<Scalars["String"]>;
-};
-
-export type Output = {
-  __typename?: "Output";
   body: Maybe<Scalars["String"]>;
 };
 
@@ -95,13 +117,17 @@ export type Page = {
   title: Maybe<Scalars["String"]>;
 };
 
+/**
+ * PageElement === PlainElement | Action | Foldable
+ * Action and Foldable allow nesting, but only one level of nesting.
+ */
 export type PageElement =
   | Action
+  | CarouselImage
   | Command
+  | CommandOutput
   | Foldable
   | Image
-  | ImageGroup
-  | Output
   | Paragraph
   | Video;
 
@@ -110,12 +136,11 @@ export type Paragraph = {
   chunks: Maybe<Array<Maybe<TextChunk>>>;
 };
 
+/** PlainElement does not allow nesting itself */
 export type PlainElement =
-  | Action
+  | CarouselImage
   | Command
-  | Image
-  | ImageGroup
-  | Output
+  | CommandOutput
   | Paragraph
   | Video;
 
@@ -128,11 +153,6 @@ export type Progress = {
 export type Query = {
   __typename?: "Query";
   tutorial: Maybe<Tutorial>;
-};
-
-export type QueryTutorialArgs = {
-  authorId: Scalars["String"];
-  tutorialId: Scalars["String"];
 };
 
 export type TextChunk = {
@@ -191,897 +211,16 @@ export enum VideoPlatform {
   Youtube = "YOUTUBE",
 }
 
-export type CommandComponentFragment = {
-  __typename?: "Command";
-  command: string | null | undefined;
-};
-
-export type FoldableComponentFragment = {
-  __typename?: "Foldable";
-  shortDescription: string | null | undefined;
-  elements:
-    | Array<
-        | {
-            __typename?: "Action";
-            paragraph:
-              | {
-                  __typename?: "Paragraph";
-                  chunks:
-                    | Array<
-                        | {
-                            __typename?: "TextChunk";
-                            text: string | null | undefined;
-                            highlight: boolean | null | undefined;
-                            bold: boolean | null | undefined;
-                            hyperlinkUrl: string | null | undefined;
-                            strikeout: boolean | null | undefined;
-                            inlineCode: boolean | null | undefined;
-                          }
-                        | null
-                        | undefined
-                      >
-                    | null
-                    | undefined;
-                }
-              | null
-              | undefined;
-          }
-        | { __typename?: "Command" }
-        | {
-            __typename?: "Image";
-            url: string | null | undefined;
-            caption: string | null | undefined;
-          }
-        | {
-            __typename?: "ImageGroup";
-            images:
-              | Array<
-                  | {
-                      __typename?: "Image";
-                      url: string | null | undefined;
-                      caption: string | null | undefined;
-                    }
-                  | null
-                  | undefined
-                >
-              | null
-              | undefined;
-          }
-        | { __typename?: "Output" }
-        | {
-            __typename?: "Paragraph";
-            chunks:
-              | Array<
-                  | {
-                      __typename?: "TextChunk";
-                      text: string | null | undefined;
-                      highlight: boolean | null | undefined;
-                      bold: boolean | null | undefined;
-                      hyperlinkUrl: string | null | undefined;
-                      strikeout: boolean | null | undefined;
-                      inlineCode: boolean | null | undefined;
-                    }
-                  | null
-                  | undefined
-                >
-              | null
-              | undefined;
-          }
-        | {
-            __typename?: "Video";
-            platform: VideoPlatform | null | undefined;
-            url: string | null | undefined;
-            caption: string | null | undefined;
-          }
-        | null
-        | undefined
-      >
-    | null
-    | undefined;
-};
-
-export type HeaderContainerFragment = {
-  __typename?: "Tutorial";
-  title: string | null | undefined;
-};
-
-export type ImageComponentFragment = {
-  __typename?: "Image";
-  url: string | null | undefined;
-  caption: string | null | undefined;
-};
-
-export type ImageGroupComponentFragment = {
-  __typename?: "ImageGroup";
-  images:
-    | Array<
-        | {
-            __typename?: "Image";
-            url: string | null | undefined;
-            caption: string | null | undefined;
-          }
-        | null
-        | undefined
-      >
-    | null
-    | undefined;
-};
-
-export type OutputComponentFragment = {
-  __typename?: "Output";
-  body: string | null | undefined;
-};
-
-export type PageComponentFragment = {
-  __typename?: "Page";
-  title: string | null | undefined;
-  pageNum: string | null | undefined;
-  progress:
-    | {
-        __typename?: "Progress";
-        currentPageNum: number | null | undefined;
-        numPages: number | null | undefined;
-      }
-    | null
-    | undefined;
-  pageElements:
-    | Array<
-        | {
-            __typename?: "Action";
-            paragraph:
-              | {
-                  __typename?: "Paragraph";
-                  chunks:
-                    | Array<
-                        | {
-                            __typename?: "TextChunk";
-                            text: string | null | undefined;
-                            highlight: boolean | null | undefined;
-                            bold: boolean | null | undefined;
-                            hyperlinkUrl: string | null | undefined;
-                            strikeout: boolean | null | undefined;
-                            inlineCode: boolean | null | undefined;
-                          }
-                        | null
-                        | undefined
-                      >
-                    | null
-                    | undefined;
-                }
-              | null
-              | undefined;
-          }
-        | { __typename?: "Command"; command: string | null | undefined }
-        | {
-            __typename?: "Foldable";
-            shortDescription: string | null | undefined;
-            elements:
-              | Array<
-                  | {
-                      __typename?: "Action";
-                      paragraph:
-                        | {
-                            __typename?: "Paragraph";
-                            chunks:
-                              | Array<
-                                  | {
-                                      __typename?: "TextChunk";
-                                      text: string | null | undefined;
-                                      highlight: boolean | null | undefined;
-                                      bold: boolean | null | undefined;
-                                      hyperlinkUrl: string | null | undefined;
-                                      strikeout: boolean | null | undefined;
-                                      inlineCode: boolean | null | undefined;
-                                    }
-                                  | null
-                                  | undefined
-                                >
-                              | null
-                              | undefined;
-                          }
-                        | null
-                        | undefined;
-                    }
-                  | { __typename?: "Command" }
-                  | {
-                      __typename?: "Image";
-                      url: string | null | undefined;
-                      caption: string | null | undefined;
-                    }
-                  | {
-                      __typename?: "ImageGroup";
-                      images:
-                        | Array<
-                            | {
-                                __typename?: "Image";
-                                url: string | null | undefined;
-                                caption: string | null | undefined;
-                              }
-                            | null
-                            | undefined
-                          >
-                        | null
-                        | undefined;
-                    }
-                  | { __typename?: "Output" }
-                  | {
-                      __typename?: "Paragraph";
-                      chunks:
-                        | Array<
-                            | {
-                                __typename?: "TextChunk";
-                                text: string | null | undefined;
-                                highlight: boolean | null | undefined;
-                                bold: boolean | null | undefined;
-                                hyperlinkUrl: string | null | undefined;
-                                strikeout: boolean | null | undefined;
-                                inlineCode: boolean | null | undefined;
-                              }
-                            | null
-                            | undefined
-                          >
-                        | null
-                        | undefined;
-                    }
-                  | {
-                      __typename?: "Video";
-                      platform: VideoPlatform | null | undefined;
-                      url: string | null | undefined;
-                      caption: string | null | undefined;
-                    }
-                  | null
-                  | undefined
-                >
-              | null
-              | undefined;
-          }
-        | {
-            __typename?: "Image";
-            url: string | null | undefined;
-            caption: string | null | undefined;
-          }
-        | {
-            __typename?: "ImageGroup";
-            images:
-              | Array<
-                  | {
-                      __typename?: "Image";
-                      url: string | null | undefined;
-                      caption: string | null | undefined;
-                    }
-                  | null
-                  | undefined
-                >
-              | null
-              | undefined;
-          }
-        | { __typename?: "Output"; body: string | null | undefined }
-        | {
-            __typename?: "Paragraph";
-            chunks:
-              | Array<
-                  | {
-                      __typename?: "TextChunk";
-                      text: string | null | undefined;
-                      highlight: boolean | null | undefined;
-                      bold: boolean | null | undefined;
-                      hyperlinkUrl: string | null | undefined;
-                      strikeout: boolean | null | undefined;
-                      inlineCode: boolean | null | undefined;
-                    }
-                  | null
-                  | undefined
-                >
-              | null
-              | undefined;
-          }
-        | {
-            __typename?: "Video";
-            platform: VideoPlatform | null | undefined;
-            url: string | null | undefined;
-            caption: string | null | undefined;
-          }
-        | null
-        | undefined
-      >
-    | null
-    | undefined;
-};
-
-export type GetTutorialPageQueryVariables = Exact<{
-  authorId: Scalars["String"];
-  tutorialId: Scalars["String"];
-}>;
-
-export type GetTutorialPageQuery = {
-  __typename?: "Query";
-  tutorial:
-    | {
-        __typename?: "Tutorial";
-        title: string | null | undefined;
-        pages:
-          | Array<
-              | {
-                  __typename?: "Page";
-                  title: string | null | undefined;
-                  pageNum: string | null | undefined;
-                  progress:
-                    | {
-                        __typename?: "Progress";
-                        currentPageNum: number | null | undefined;
-                        numPages: number | null | undefined;
-                      }
-                    | null
-                    | undefined;
-                  pageElements:
-                    | Array<
-                        | {
-                            __typename?: "Action";
-                            paragraph:
-                              | {
-                                  __typename?: "Paragraph";
-                                  chunks:
-                                    | Array<
-                                        | {
-                                            __typename?: "TextChunk";
-                                            text: string | null | undefined;
-                                            highlight:
-                                              | boolean
-                                              | null
-                                              | undefined;
-                                            bold: boolean | null | undefined;
-                                            hyperlinkUrl:
-                                              | string
-                                              | null
-                                              | undefined;
-                                            strikeout:
-                                              | boolean
-                                              | null
-                                              | undefined;
-                                            inlineCode:
-                                              | boolean
-                                              | null
-                                              | undefined;
-                                          }
-                                        | null
-                                        | undefined
-                                      >
-                                    | null
-                                    | undefined;
-                                }
-                              | null
-                              | undefined;
-                          }
-                        | {
-                            __typename?: "Command";
-                            command: string | null | undefined;
-                          }
-                        | {
-                            __typename?: "Foldable";
-                            shortDescription: string | null | undefined;
-                            elements:
-                              | Array<
-                                  | {
-                                      __typename?: "Action";
-                                      paragraph:
-                                        | {
-                                            __typename?: "Paragraph";
-                                            chunks:
-                                              | Array<
-                                                  | {
-                                                      __typename?: "TextChunk";
-                                                      text:
-                                                        | string
-                                                        | null
-                                                        | undefined;
-                                                      highlight:
-                                                        | boolean
-                                                        | null
-                                                        | undefined;
-                                                      bold:
-                                                        | boolean
-                                                        | null
-                                                        | undefined;
-                                                      hyperlinkUrl:
-                                                        | string
-                                                        | null
-                                                        | undefined;
-                                                      strikeout:
-                                                        | boolean
-                                                        | null
-                                                        | undefined;
-                                                      inlineCode:
-                                                        | boolean
-                                                        | null
-                                                        | undefined;
-                                                    }
-                                                  | null
-                                                  | undefined
-                                                >
-                                              | null
-                                              | undefined;
-                                          }
-                                        | null
-                                        | undefined;
-                                    }
-                                  | { __typename?: "Command" }
-                                  | {
-                                      __typename?: "Image";
-                                      url: string | null | undefined;
-                                      caption: string | null | undefined;
-                                    }
-                                  | {
-                                      __typename?: "ImageGroup";
-                                      images:
-                                        | Array<
-                                            | {
-                                                __typename?: "Image";
-                                                url: string | null | undefined;
-                                                caption:
-                                                  | string
-                                                  | null
-                                                  | undefined;
-                                              }
-                                            | null
-                                            | undefined
-                                          >
-                                        | null
-                                        | undefined;
-                                    }
-                                  | { __typename?: "Output" }
-                                  | {
-                                      __typename?: "Paragraph";
-                                      chunks:
-                                        | Array<
-                                            | {
-                                                __typename?: "TextChunk";
-                                                text: string | null | undefined;
-                                                highlight:
-                                                  | boolean
-                                                  | null
-                                                  | undefined;
-                                                bold:
-                                                  | boolean
-                                                  | null
-                                                  | undefined;
-                                                hyperlinkUrl:
-                                                  | string
-                                                  | null
-                                                  | undefined;
-                                                strikeout:
-                                                  | boolean
-                                                  | null
-                                                  | undefined;
-                                                inlineCode:
-                                                  | boolean
-                                                  | null
-                                                  | undefined;
-                                              }
-                                            | null
-                                            | undefined
-                                          >
-                                        | null
-                                        | undefined;
-                                    }
-                                  | {
-                                      __typename?: "Video";
-                                      platform:
-                                        | VideoPlatform
-                                        | null
-                                        | undefined;
-                                      url: string | null | undefined;
-                                      caption: string | null | undefined;
-                                    }
-                                  | null
-                                  | undefined
-                                >
-                              | null
-                              | undefined;
-                          }
-                        | {
-                            __typename?: "Image";
-                            url: string | null | undefined;
-                            caption: string | null | undefined;
-                          }
-                        | {
-                            __typename?: "ImageGroup";
-                            images:
-                              | Array<
-                                  | {
-                                      __typename?: "Image";
-                                      url: string | null | undefined;
-                                      caption: string | null | undefined;
-                                    }
-                                  | null
-                                  | undefined
-                                >
-                              | null
-                              | undefined;
-                          }
-                        | {
-                            __typename?: "Output";
-                            body: string | null | undefined;
-                          }
-                        | {
-                            __typename?: "Paragraph";
-                            chunks:
-                              | Array<
-                                  | {
-                                      __typename?: "TextChunk";
-                                      text: string | null | undefined;
-                                      highlight: boolean | null | undefined;
-                                      bold: boolean | null | undefined;
-                                      hyperlinkUrl: string | null | undefined;
-                                      strikeout: boolean | null | undefined;
-                                      inlineCode: boolean | null | undefined;
-                                    }
-                                  | null
-                                  | undefined
-                                >
-                              | null
-                              | undefined;
-                          }
-                        | {
-                            __typename?: "Video";
-                            platform: VideoPlatform | null | undefined;
-                            url: string | null | undefined;
-                            caption: string | null | undefined;
-                          }
-                        | null
-                        | undefined
-                      >
-                    | null
-                    | undefined;
-                }
-              | null
-              | undefined
-            >
-          | null
-          | undefined;
-      }
-    | null
-    | undefined;
-};
-
-export type ProgressBarFragment = {
-  __typename?: "Progress";
-  currentPageNum: number | null | undefined;
-  numPages: number | null | undefined;
-};
-
-export type GetTutorialQueryVariables = Exact<{
-  authorId: Scalars["String"];
-  tutorialId: Scalars["String"];
-}>;
-
-export type GetTutorialQuery = {
-  __typename?: "Query";
-  tutorial: { __typename: "Tutorial" } | null | undefined;
-};
-
-export type VideoComponentFragment = {
-  __typename?: "Video";
-  platform: VideoPlatform | null | undefined;
-  url: string | null | undefined;
-  caption: string | null | undefined;
-};
-
-export type ActionComponentFragment = {
-  __typename?: "Action";
-  paragraph:
-    | {
-        __typename?: "Paragraph";
-        chunks:
-          | Array<
-              | {
-                  __typename?: "TextChunk";
-                  text: string | null | undefined;
-                  highlight: boolean | null | undefined;
-                  bold: boolean | null | undefined;
-                  hyperlinkUrl: string | null | undefined;
-                  strikeout: boolean | null | undefined;
-                  inlineCode: boolean | null | undefined;
-                }
-              | null
-              | undefined
-            >
-          | null
-          | undefined;
-      }
-    | null
-    | undefined;
-};
-
-export type ParagraphComponentFragment = {
-  __typename?: "Paragraph";
-  chunks:
-    | Array<
-        | {
-            __typename?: "TextChunk";
-            text: string | null | undefined;
-            highlight: boolean | null | undefined;
-            bold: boolean | null | undefined;
-            hyperlinkUrl: string | null | undefined;
-            strikeout: boolean | null | undefined;
-            inlineCode: boolean | null | undefined;
-          }
-        | null
-        | undefined
-      >
-    | null
-    | undefined;
-};
-
-export type TextChunkComponentFragment = {
+export type NonusedFragment = {
   __typename?: "TextChunk";
   text: string | null | undefined;
-  highlight: boolean | null | undefined;
-  bold: boolean | null | undefined;
-  hyperlinkUrl: string | null | undefined;
-  strikeout: boolean | null | undefined;
-  inlineCode: boolean | null | undefined;
 };
 
-export const HeaderContainerFragmentDoc = gql`
-  fragment HeaderContainer on Tutorial {
-    title
-  }
-`;
-export const ProgressBarFragmentDoc = gql`
-  fragment ProgressBar on Progress {
-    currentPageNum
-    numPages
-  }
-`;
-export const VideoComponentFragmentDoc = gql`
-  fragment VideoComponent on Video {
-    platform
-    url
-    caption
-  }
-`;
-export const TextChunkComponentFragmentDoc = gql`
-  fragment TextChunkComponent on TextChunk {
+export const NonusedFragmentDoc = gql`
+  fragment nonused on TextChunk {
     text
-    highlight
-    bold
-    hyperlinkUrl
-    strikeout
-    inlineCode
   }
 `;
-export const ParagraphComponentFragmentDoc = gql`
-  fragment ParagraphComponent on Paragraph {
-    chunks {
-      ...TextChunkComponent
-    }
-  }
-  ${TextChunkComponentFragmentDoc}
-`;
-export const ImageComponentFragmentDoc = gql`
-  fragment ImageComponent on Image {
-    url
-    caption
-  }
-`;
-export const ImageGroupComponentFragmentDoc = gql`
-  fragment ImageGroupComponent on ImageGroup {
-    images {
-      ...ImageComponent
-    }
-  }
-  ${ImageComponentFragmentDoc}
-`;
-export const ActionComponentFragmentDoc = gql`
-  fragment ActionComponent on Action {
-    paragraph {
-      ...ParagraphComponent
-    }
-  }
-  ${ParagraphComponentFragmentDoc}
-`;
-export const FoldableComponentFragmentDoc = gql`
-  fragment FoldableComponent on Foldable {
-    shortDescription
-    elements {
-      ... on Video {
-        ...VideoComponent
-      }
-      ... on Paragraph {
-        ...ParagraphComponent
-      }
-      ... on ImageGroup {
-        ...ImageGroupComponent
-      }
-      ... on Image {
-        ...ImageComponent
-      }
-      ... on Action {
-        ...ActionComponent
-      }
-    }
-  }
-  ${VideoComponentFragmentDoc}
-  ${ParagraphComponentFragmentDoc}
-  ${ImageGroupComponentFragmentDoc}
-  ${ImageComponentFragmentDoc}
-  ${ActionComponentFragmentDoc}
-`;
-export const CommandComponentFragmentDoc = gql`
-  fragment CommandComponent on Command {
-    command
-  }
-`;
-export const OutputComponentFragmentDoc = gql`
-  fragment OutputComponent on Output {
-    body
-  }
-`;
-export const PageComponentFragmentDoc = gql`
-  fragment PageComponent on Page {
-    title
-    pageNum
-    progress {
-      ...ProgressBar
-    }
-    pageElements {
-      ... on Video {
-        ...VideoComponent
-      }
-      ... on Paragraph {
-        ...ParagraphComponent
-      }
-      ... on ImageGroup {
-        ...ImageGroupComponent
-      }
-      ... on Foldable {
-        ...FoldableComponent
-      }
-      ... on Action {
-        ...ActionComponent
-      }
-      ... on Command {
-        ...CommandComponent
-      }
-      ... on Output {
-        ...OutputComponent
-      }
-      ... on Image {
-        ...ImageComponent
-      }
-    }
-  }
-  ${ProgressBarFragmentDoc}
-  ${VideoComponentFragmentDoc}
-  ${ParagraphComponentFragmentDoc}
-  ${ImageGroupComponentFragmentDoc}
-  ${FoldableComponentFragmentDoc}
-  ${ActionComponentFragmentDoc}
-  ${CommandComponentFragmentDoc}
-  ${OutputComponentFragmentDoc}
-  ${ImageComponentFragmentDoc}
-`;
-export const GetTutorialPageDocument = gql`
-  query GetTutorialPage($authorId: String!, $tutorialId: String!) {
-    tutorial(authorId: $authorId, tutorialId: $tutorialId) {
-      ...HeaderContainer
-      pages {
-        ...PageComponent
-      }
-    }
-  }
-  ${HeaderContainerFragmentDoc}
-  ${PageComponentFragmentDoc}
-`;
-
-/**
- * __useGetTutorialPageQuery__
- *
- * To run a query within a React component, call `useGetTutorialPageQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTutorialPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTutorialPageQuery({
- *   variables: {
- *      authorId: // value for 'authorId'
- *      tutorialId: // value for 'tutorialId'
- *   },
- * });
- */
-export function useGetTutorialPageQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetTutorialPageQuery,
-    GetTutorialPageQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTutorialPageQuery, GetTutorialPageQueryVariables>(
-    GetTutorialPageDocument,
-    options
-  );
-}
-export function useGetTutorialPageLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetTutorialPageQuery,
-    GetTutorialPageQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetTutorialPageQuery,
-    GetTutorialPageQueryVariables
-  >(GetTutorialPageDocument, options);
-}
-export type GetTutorialPageQueryHookResult = ReturnType<
-  typeof useGetTutorialPageQuery
->;
-export type GetTutorialPageLazyQueryHookResult = ReturnType<
-  typeof useGetTutorialPageLazyQuery
->;
-export type GetTutorialPageQueryResult = Apollo.QueryResult<
-  GetTutorialPageQuery,
-  GetTutorialPageQueryVariables
->;
-export const GetTutorialDocument = gql`
-  query GetTutorial($authorId: String!, $tutorialId: String!) {
-    tutorial(authorId: $authorId, tutorialId: $tutorialId) {
-      __typename
-    }
-  }
-`;
-
-/**
- * __useGetTutorialQuery__
- *
- * To run a query within a React component, call `useGetTutorialQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetTutorialQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetTutorialQuery({
- *   variables: {
- *      authorId: // value for 'authorId'
- *      tutorialId: // value for 'tutorialId'
- *   },
- * });
- */
-export function useGetTutorialQuery(
-  baseOptions: Apollo.QueryHookOptions<
-    GetTutorialQuery,
-    GetTutorialQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<GetTutorialQuery, GetTutorialQueryVariables>(
-    GetTutorialDocument,
-    options
-  );
-}
-export function useGetTutorialLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetTutorialQuery,
-    GetTutorialQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<GetTutorialQuery, GetTutorialQueryVariables>(
-    GetTutorialDocument,
-    options
-  );
-}
-export type GetTutorialQueryHookResult = ReturnType<typeof useGetTutorialQuery>;
-export type GetTutorialLazyQueryHookResult = ReturnType<
-  typeof useGetTutorialLazyQuery
->;
-export type GetTutorialQueryResult = Apollo.QueryResult<
-  GetTutorialQuery,
-  GetTutorialQueryVariables
->;
 export type WithIndex<TObject> = TObject & Record<string, any>;
 export type ResolversObject<TObject> = WithIndex<TObject>;
 
@@ -1192,13 +331,24 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
-  Action: ResolverTypeWrapper<Action>;
+  Action: ResolverTypeWrapper<
+    Omit<Action, "details" | "results"> & {
+      details: Maybe<Array<Maybe<ResolversTypes["PlainElement"]>>>;
+      results: Maybe<Array<Maybe<ResolversTypes["PlainElement"]>>>;
+    }
+  >;
   Author: ResolverTypeWrapper<Author>;
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
+  CarouselImage: ResolverTypeWrapper<CarouselImage>;
   Command: ResolverTypeWrapper<Command>;
-  CommandAndOutput: ResolverTypeWrapper<CommandAndOutput>;
+  CommandOutput: ResolverTypeWrapper<CommandOutput>;
   DecorateTextChunksInput: ResolverTypeWrapper<DecorateTextChunksInput>;
   DirectoryStructure: ResolverTypeWrapper<DirectoryStructure>;
+  File: ResolverTypeWrapper<File>;
+  FileMultiple: ResolverTypeWrapper<FileMultiple>;
+  FileTree: ResolverTypeWrapper<FileTree>;
+  FileTreeNode: ResolverTypeWrapper<FileTreeNode>;
+  FileTreeNodeType: FileTreeNodeType;
   Foldable: ResolverTypeWrapper<
     Omit<Foldable, "elements"> & {
       elements: Maybe<Array<Maybe<ResolversTypes["PlainElement"]>>>;
@@ -1206,10 +356,8 @@ export type ResolversTypes = ResolversObject<{
   >;
   ID: ResolverTypeWrapper<Scalars["ID"]>;
   Image: ResolverTypeWrapper<Image>;
-  ImageGroup: ResolverTypeWrapper<ImageGroup>;
   Int: ResolverTypeWrapper<Scalars["Int"]>;
   Note: ResolverTypeWrapper<Note>;
-  Output: ResolverTypeWrapper<Output>;
   Page: ResolverTypeWrapper<
     Omit<Page, "pageElements"> & {
       pageElements: Maybe<Array<Maybe<ResolversTypes["PageElement"]>>>;
@@ -1217,20 +365,18 @@ export type ResolversTypes = ResolversObject<{
   >;
   PageElement:
     | ResolversTypes["Action"]
+    | ResolversTypes["CarouselImage"]
     | ResolversTypes["Command"]
+    | ResolversTypes["CommandOutput"]
     | ResolversTypes["Foldable"]
     | ResolversTypes["Image"]
-    | ResolversTypes["ImageGroup"]
-    | ResolversTypes["Output"]
     | ResolversTypes["Paragraph"]
     | ResolversTypes["Video"];
   Paragraph: ResolverTypeWrapper<Paragraph>;
   PlainElement:
-    | ResolversTypes["Action"]
+    | ResolversTypes["CarouselImage"]
     | ResolversTypes["Command"]
-    | ResolversTypes["Image"]
-    | ResolversTypes["ImageGroup"]
-    | ResolversTypes["Output"]
+    | ResolversTypes["CommandOutput"]
     | ResolversTypes["Paragraph"]
     | ResolversTypes["Video"];
   Progress: ResolverTypeWrapper<Progress>;
@@ -1254,41 +400,45 @@ export type ResolversTypes = ResolversObject<{
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
-  Action: Action;
+  Action: Omit<Action, "details" | "results"> & {
+    details: Maybe<Array<Maybe<ResolversParentTypes["PlainElement"]>>>;
+    results: Maybe<Array<Maybe<ResolversParentTypes["PlainElement"]>>>;
+  };
   Author: Author;
   Boolean: Scalars["Boolean"];
+  CarouselImage: CarouselImage;
   Command: Command;
-  CommandAndOutput: CommandAndOutput;
+  CommandOutput: CommandOutput;
   DecorateTextChunksInput: DecorateTextChunksInput;
   DirectoryStructure: DirectoryStructure;
+  File: File;
+  FileMultiple: FileMultiple;
+  FileTree: FileTree;
+  FileTreeNode: FileTreeNode;
   Foldable: Omit<Foldable, "elements"> & {
     elements: Maybe<Array<Maybe<ResolversParentTypes["PlainElement"]>>>;
   };
   ID: Scalars["ID"];
   Image: Image;
-  ImageGroup: ImageGroup;
   Int: Scalars["Int"];
   Note: Note;
-  Output: Output;
   Page: Omit<Page, "pageElements"> & {
     pageElements: Maybe<Array<Maybe<ResolversParentTypes["PageElement"]>>>;
   };
   PageElement:
     | ResolversParentTypes["Action"]
+    | ResolversParentTypes["CarouselImage"]
     | ResolversParentTypes["Command"]
+    | ResolversParentTypes["CommandOutput"]
     | ResolversParentTypes["Foldable"]
     | ResolversParentTypes["Image"]
-    | ResolversParentTypes["ImageGroup"]
-    | ResolversParentTypes["Output"]
     | ResolversParentTypes["Paragraph"]
     | ResolversParentTypes["Video"];
   Paragraph: Paragraph;
   PlainElement:
-    | ResolversParentTypes["Action"]
+    | ResolversParentTypes["CarouselImage"]
     | ResolversParentTypes["Command"]
-    | ResolversParentTypes["Image"]
-    | ResolversParentTypes["ImageGroup"]
-    | ResolversParentTypes["Output"]
+    | ResolversParentTypes["CommandOutput"]
     | ResolversParentTypes["Paragraph"]
     | ResolversParentTypes["Video"];
   Progress: Progress;
@@ -1311,8 +461,18 @@ export type ActionResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Action"] = ResolversParentTypes["Action"]
 > = ResolversObject<{
-  paragraph: Resolver<
+  details: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["PlainElement"]>>>,
+    ParentType,
+    ContextType
+  >;
+  instruction: Resolver<
     Maybe<ResolversTypes["Paragraph"]>,
+    ParentType,
+    ContextType
+  >;
+  results: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["PlainElement"]>>>,
     ParentType,
     ContextType
   >;
@@ -1327,20 +487,31 @@ export type AuthorResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type CarouselImageResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["CarouselImage"] = ResolversParentTypes["CarouselImage"]
+> = ResolversObject<{
+  images: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["Image"]>>>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type CommandResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Command"] = ResolversParentTypes["Command"]
 > = ResolversObject<{
-  command: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  text: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type CommandAndOutputResolvers<
+export type CommandOutputResolvers<
   ContextType = any,
-  ParentType extends ResolversParentTypes["CommandAndOutput"] = ResolversParentTypes["CommandAndOutput"]
+  ParentType extends ResolversParentTypes["CommandOutput"] = ResolversParentTypes["CommandOutput"]
 > = ResolversObject<{
-  command: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  output: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  text: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1368,6 +539,53 @@ export type DirectoryStructureResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type FileResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["File"] = ResolversParentTypes["File"]
+> = ResolversObject<{
+  content: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  fileName: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type FileMultipleResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["FileMultiple"] = ResolversParentTypes["FileMultiple"]
+> = ResolversObject<{
+  files: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["File"]>>>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type FileTreeResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["FileTree"] = ResolversParentTypes["FileTree"]
+> = ResolversObject<{
+  treeNodes: Resolver<
+    Maybe<Array<Maybe<ResolversTypes["FileTreeNode"]>>>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type FileTreeNodeResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["FileTreeNode"] = ResolversParentTypes["FileTreeNode"]
+> = ResolversObject<{
+  depth: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
+  name: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  nodeType: Resolver<
+    Maybe<ResolversTypes["FileTreeNodeType"]>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type FoldableResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Foldable"] = ResolversParentTypes["Foldable"]
@@ -1389,34 +607,17 @@ export type ImageResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Image"] = ResolversParentTypes["Image"]
 > = ResolversObject<{
+  alt: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   caption: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  height: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   url: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type ImageGroupResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes["ImageGroup"] = ResolversParentTypes["ImageGroup"]
-> = ResolversObject<{
-  images: Resolver<
-    Maybe<Array<Maybe<ResolversTypes["Image"]>>>,
-    ParentType,
-    ContextType
-  >;
+  width: Resolver<Maybe<ResolversTypes["Int"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type NoteResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Note"] = ResolversParentTypes["Note"]
-> = ResolversObject<{
-  body: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type OutputResolvers<
-  ContextType = any,
-  ParentType extends ResolversParentTypes["Output"] = ResolversParentTypes["Output"]
 > = ResolversObject<{
   body: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -1458,11 +659,11 @@ export type PageElementResolvers<
 > = ResolversObject<{
   __resolveType: TypeResolveFn<
     | "Action"
+    | "CarouselImage"
     | "Command"
+    | "CommandOutput"
     | "Foldable"
     | "Image"
-    | "ImageGroup"
-    | "Output"
     | "Paragraph"
     | "Video",
     ParentType,
@@ -1487,13 +688,7 @@ export type PlainElementResolvers<
   ParentType extends ResolversParentTypes["PlainElement"] = ResolversParentTypes["PlainElement"]
 > = ResolversObject<{
   __resolveType: TypeResolveFn<
-    | "Action"
-    | "Command"
-    | "Image"
-    | "ImageGroup"
-    | "Output"
-    | "Paragraph"
-    | "Video",
+    "CarouselImage" | "Command" | "CommandOutput" | "Paragraph" | "Video",
     ParentType,
     ContextType
   >;
@@ -1519,8 +714,7 @@ export type QueryResolvers<
   tutorial: Resolver<
     Maybe<ResolversTypes["Tutorial"]>,
     ParentType,
-    ContextType,
-    RequireFields<QueryTutorialArgs, "authorId" | "tutorialId">
+    ContextType
   >;
 }>;
 
@@ -1651,15 +845,18 @@ export type VideoResolvers<
 export type Resolvers<ContextType = any> = ResolversObject<{
   Action: ActionResolvers<ContextType>;
   Author: AuthorResolvers<ContextType>;
+  CarouselImage: CarouselImageResolvers<ContextType>;
   Command: CommandResolvers<ContextType>;
-  CommandAndOutput: CommandAndOutputResolvers<ContextType>;
+  CommandOutput: CommandOutputResolvers<ContextType>;
   DecorateTextChunksInput: DecorateTextChunksInputResolvers<ContextType>;
   DirectoryStructure: DirectoryStructureResolvers<ContextType>;
+  File: FileResolvers<ContextType>;
+  FileMultiple: FileMultipleResolvers<ContextType>;
+  FileTree: FileTreeResolvers<ContextType>;
+  FileTreeNode: FileTreeNodeResolvers<ContextType>;
   Foldable: FoldableResolvers<ContextType>;
   Image: ImageResolvers<ContextType>;
-  ImageGroup: ImageGroupResolvers<ContextType>;
   Note: NoteResolvers<ContextType>;
-  Output: OutputResolvers<ContextType>;
   Page: PageResolvers<ContextType>;
   PageElement: PageElementResolvers<ContextType>;
   Paragraph: ParagraphResolvers<ContextType>;

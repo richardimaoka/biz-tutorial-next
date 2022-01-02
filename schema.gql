@@ -1,5 +1,5 @@
 type Query {
-  tutorial(authorId: String!, tutorialId: String!): Tutorial
+  tutorial: Tutorial
 }
 
 type Author {
@@ -23,24 +23,25 @@ type Page {
   pageElements: [PageElement]
 }
 
+"""
+PlainElement does not allow nesting itself
+"""
+union PlainElement = Paragraph | Command | CommandOutput | Video | CarouselImage
+# | Image
+
+"""
+PageElement === PlainElement | Action | Foldable
+Action and Foldable allow nesting, but only one level of nesting.
+"""
 union PageElement =
     Paragraph
   | Command
-  | Output
+  | CommandOutput
   | Video
-  | Action
-  | ImageGroup
+  | CarouselImage
   | Image
+  | Action
   | Foldable
-
-union PlainElement =
-    Paragraph
-  | Command
-  | Output
-  | Video
-  | Action
-  | ImageGroup
-  | Image
 
 enum VideoPlatform {
   YOUTUBE
@@ -53,17 +54,24 @@ type Video {
   caption: String
 }
 
-type ImageGroup {
+type CarouselImage {
   images: [Image]
 }
 
 type Image {
   url: String
+  alt: String
   caption: String
+  width: Int
+  height: Int
 }
 
-type Output {
-  body: String
+type Command {
+  text: String
+}
+
+type CommandOutput {
+  text: String
 }
 
 type Progress {
@@ -76,7 +84,9 @@ type Paragraph {
 }
 
 type Action {
-  paragraph: Paragraph
+  instruction: Paragraph
+  details: [PlainElement]
+  results: [PlainElement]
 }
 
 type TextChunk {
@@ -93,15 +103,6 @@ type Foldable {
   elements: [PlainElement]
 }
 
-type Command {
-  command: String
-}
-
-type CommandAndOutput {
-  command: String
-  output: String
-}
-
 type DirectoryStructure {
   contents: [String]
 }
@@ -109,6 +110,7 @@ type DirectoryStructure {
 type Note {
   body: String
 }
+
 type TextChunkModifyOperation {
   bold: Boolean
   highlight: Boolean
@@ -132,4 +134,28 @@ type TextChunkWithOperation {
 
 type DecorateTextChunksInput {
   chunks: [TextChunkWithOperation]!
+}
+
+type File {
+  fileName: String
+  content: String
+}
+
+type FileMultiple {
+  files: [File]
+}
+
+enum FileTreeNodeType {
+  FILENODE
+  DIRECTORYNODE
+}
+
+type FileTreeNode {
+  nodeType: FileTreeNodeType
+  name: String
+  depth: Int
+}
+
+type FileTree {
+  treeNodes: [FileTreeNode]
 }
