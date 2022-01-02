@@ -1,6 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
-import { TutorialComponent } from "../../components/TutorialComponent";
 import { authorDirNames, tutorialDirNames } from "../../lib/tutorialDirs";
 
 interface StaticProps extends ParsedUrlQuery {
@@ -57,7 +56,9 @@ export const getStaticPaths: GetStaticPaths<StaticProps> = async () => {
 };
 
 const Id = ({ authorId, tutorialId }: StaticProps): JSX.Element => (
-  <TutorialComponent authorId={authorId} tutorialId={tutorialId} />
+  <div>
+    authorId={authorId} tutorialId={tutorialId}{" "}
+  </div>
 );
 
 export default Id;

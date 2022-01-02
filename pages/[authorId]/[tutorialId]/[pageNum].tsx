@@ -1,6 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
-import { PageQueryComponent } from "../../../components/PageQueryComponent";
 import {
   authorDirNames,
   listPageNumbers,
@@ -71,11 +70,11 @@ const PageNum = ({
   tutorialId,
   pageNum,
 }: StaticProps): JSX.Element => (
-  <PageQueryComponent
+  <div>
     authorId={authorId}
     tutorialId={tutorialId}
     pageNum={pageNum}
-  />
+  </div>
 );
 
 export default PageNum;

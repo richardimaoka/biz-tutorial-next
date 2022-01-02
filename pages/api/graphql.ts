@@ -1,9 +1,9 @@
-import { listPageJsonFiles, readJsonFile } from "./../../lib/tutorialDirs";
 import { ApolloServer, gql } from "apollo-server-micro";
 import fs from "fs";
 import path from "path";
 import { Tutorial } from "../../lib/generated/graphql";
 import { Page, Resolvers } from "./../../lib/generated/graphql";
+import { listPageJsonFiles, readJsonFile } from "./../../lib/tutorialDirs";
 
 const typeDefs = gql`
   ${fs.readFileSync(path.resolve("schema.gql"), "utf8")}
